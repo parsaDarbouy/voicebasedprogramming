@@ -1,0 +1,87 @@
+﻿# Variable Declaration
+### Overall Format:
+In order to declare any variable in python, user has to say the following format:
+
+    variable {name_of_the_variable} is {type_of_the_variable} {value_of_the_variable}
+
+ for example:
+
+    variable my name is string sina
+
+and the code which will be generated is:
+
+    my_name = 'sina'
+
+### Descriptions:
+the name of the variable will be generated in `snake_case` format, based on the PEP-8 convention.
+For the type of the variable, 5 options are available:
+
+|Type of The Variable| Keyword    |
+|--------------------|------------|
+| Integer Number     | integer    |
+| Floating Number    | float      |
+| Strings            | string     |
+| Lists              | list       |
+| Dictionaries       | Dictionary |
+
+And the format of the value of the variable is dependent on the type of the variable:
+
+ - **Integer Number:**
+ The user has to say the number, exactly.
+  - **Floating Number**:
+ At first, the user has to say the integer part of the number, and after that, for separating the integer part from the decimal part, the word *point* has to be said by the user, and finally the decimal part.
+  - **Strings**:
+ The exact string has to be said, word by word. If there is a number in the string, the number will be interpreted as letters, but if you want to use digits instead of letters, the word *digit* has to be said, and after that, the digits have to be said, one by one.
+  - **Lists**:
+ In this case, the user has to say the type of the variable in the list and the value of that and after that, if he/she wants to add other variables, the word *next* has to be said, and at last the words *end of list* has to be said.
+  - **Dictionaries**:
+ Finally, the user has to say the key and the value, respectively, with the type of them, and at last the words *end of dictionary* has to be said.
+
+### Examples:
+ - **Integer Number:**
+```
+Input:
+variable my integer number is twenty two
+Output:
+my_integer_number = 22
+```
+ - **Floating Number:**
+```
+Input:
+variable my floating number is seven point fifty six
+Output:
+my_floating_number = 7.56
+```
+ - **String:**
+```
+Input:
+variable my first string is my name is sina
+Output:
+my_first_string = 'my name is sina'
+```
+```
+Input:
+variable my second string is consider the number forty two
+Output:
+my_second_string = 'consider the number forty two'
+```
+```
+Input:
+variable my thirs string is consider the number digit four two
+Output:
+my_first_string = 'consider the number 42'
+```
+ - **Lists:**
+```
+Input:
+variable my list is integer five next float four point six next string sina end of list
+Output:
+my_list = [5, 4.6, 'sina']
+```
+ - **Dictionaries:**
+```
+Input:
+variable my dictionary is string age integer twenty one next list string sina integer 5 end of list float three point six
+Output:
+my_dictionary = {'age': 21, ['sina', 5]: 3.6}
+```
