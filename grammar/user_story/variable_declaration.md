@@ -31,7 +31,7 @@ And the format of the value of the variable is dependent on the type of the vari
   - **Floating Number**:
  At first, the user has to say the integer part of the number, and after that, for separating the integer part from the decimal part, the word *point* has to be said by the user, and finally the decimal part.
   - **Strings**:
- The exact string has to be said, word by word. If there is a number in the string, the number will be interpreted as letters, but if you want to use digits instead of letters, the word *digit* has to be said, and after that, the digits have to be said, one by one.
+ The exact string has to be said, word by word. If there is a number in the string, the number will be interpreted as letters, but if you want to use digits instead of letters, the word *digit* has to be said.
   - **Lists**:
  In this case, the user has to say the type of the variable in the list and the value of that and after that, if he/she wants to add other variables, the word *next* has to be said, and at last the words *end of list* has to be said.
   - **Dictionaries**:
@@ -41,47 +41,47 @@ And the format of the value of the variable is dependent on the type of the vari
  - **Integer Number:**
 ```
 Input:
-variable my integer number is twenty two
+variable my integer number is integer 22
 Output:
 my_integer_number = 22
 ```
  - **Floating Number:**
 ```
 Input:
-variable my floating number is seven point fifty six
+variable my floating number is float 7 point 56
 Output:
 my_floating_number = 7.56
 ```
  - **Strings:**
 ```
 Input:
-variable my first string is my name is sina
+variable my first string is string my name is sina
 Output:
 my_first_string = 'my name is sina'
 ```
 ```
 Input:
-variable my second string is consider the number forty two
+variable my second string is string consider the number 42
 Output:
 my_second_string = 'consider the number forty two'
 ```
 ```
 Input:
-variable my thirs string is consider the number digit four two
+variable my third string is string consider the number digit 42
 Output:
 my_third_string = 'consider the number 42'
 ```
  - **Lists:**
 ```
 Input:
-variable my list is integer five next float four point six next string sina end of list
+variable my list is list integer five next float four point six next string sina end of list
 Output:
 my_list = [5, 4.6, 'sina']
 ```
  - **Dictionaries:**
 ```
 Input:
-variable my dictionary is string age integer twenty one next list string sina integer 5 end of list float three point six end of dictionary
+variable my dictionary is dictionary string age integer twenty one next list string sina integer 5 end of list float three point six end of dictionary
 Output:
 my_dictionary = {'age': 21, ['sina', 5]: 3.6}
 ```
