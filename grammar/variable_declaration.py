@@ -1,4 +1,5 @@
 import functools
+import inflect
 
 
 class VariableDeclaration:
@@ -16,15 +17,32 @@ class VariableDeclaration:
         snake_case_name = functools.reduce(lambda first, second: f'{first}_{second}', name)
         return str(snake_case_name)
 
-    def find_type(self):
+    def find_type(self) -> str:
         variable_type = self.command[self.find_is_keyword_index() + 1]
         return variable_type
 
-    def find_value(self):
-        value = self.command[self.find_is_keyword_index() + 2]
+    @staticmethod
+    def parse_string(input_string: list) -> str:
+        if 'letters' in input_string and len(input_string) > input_string.index('letters'):
+            number_value = input_string[input_string.index('letters') + 1]
+            if int(number_value[0]) < 10:
+                input_string[input_string.index('letters') + 1] = inflect.engine().number_to_words(int(number_value))
+                input_string.remove('letters')
+        value = str(functools.reduce(lambda first, second: f'{first} {second}', input_string))
         return value
 
-    def find_name(self):
+    def find_value(self) -> str:
+        is_keyword_index = self.find_is_keyword_index()
+        value = None
+        if self.type == 'integer':
+            value = self.command[is_keyword_index + 2]
+        elif self.type == 'float':
+            value = f'{self.command[is_keyword_index + 2]}.{self.command[is_keyword_index + 4]}'
+        elif self.type == 'string':
+            value = self.parse_string(self.command[is_keyword_index + 2:])
+        return value
+
+    def find_name(self) -> str:
         end_of_name = self.find_is_keyword_index()
         words_of_name = self.command[1:end_of_name]
         return self.convert_to_snake_case(words_of_name)
@@ -36,13 +54,6 @@ class VariableDeclaration:
         is_keyword_index = max(list(is_keyword_index))
         return is_keyword_index
 
-    def generate_code(self):
-        if self.type == 'integer':
-            code = f'{self.name} = {self.value}'
-            return code
-        else:
-            return 0
-
-
-variable_declaration = VariableDeclaration('variable my integer number is integer 22')
-print(variable_declaration.generate_code())
+    def generate_code(self) -> str:
+        code = f'{self.name} = {self.value}'
+        return code
