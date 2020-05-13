@@ -31,7 +31,7 @@ And the format of the value of the variable is dependent on the type of the vari
   - **Floating Number**:
  At first, the user has to say the integer part of the number, and after that, for separating the integer part from the decimal part, the word *point* has to be said by the user, and finally the decimal part.
   - **Strings**:
- The exact string has to be said, word by word. If there is a number in the string, the number will be interpreted as letters, but if you want to use digits instead of letters, the word *digit* has to be said.
+ The exact string has to be said, word by word. If there is a number in the string, the number will be interpreted as digits, but if you want to use letters instead of digits, the word *letters* has to be said.
   - **Lists**:
  In this case, the user has to say the type of the variable in the list and the value of that and after that, if he/she wants to add other variables, the word *next* has to be said, and at last the words *end of list* has to be said.
   - **Dictionaries**:
@@ -63,13 +63,13 @@ my_first_string = 'my name is sina'
 Input:
 variable my second string is string consider the number 42
 Output:
-my_second_string = 'consider the number forty two'
+my_second_string = 'consider the number 42'
 ```
 ```
 Input:
-variable my third string is string consider the number digit 42
+variable my third string is string consider the number letters 42
 Output:
-my_third_string = 'consider the number 42'
+my_third_string = 'consider the number forty-two'
 ```
  - **Lists:**
 ```
