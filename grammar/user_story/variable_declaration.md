@@ -52,7 +52,7 @@ variable my floating number is seven point fifty six
 Output:
 my_floating_number = 7.56
 ```
- - **String:**
+ - **Strings:**
 ```
 Input:
 variable my first string is my name is sina
@@ -69,7 +69,7 @@ my_second_string = 'consider the number forty two'
 Input:
 variable my thirs string is consider the number digit four two
 Output:
-my_first_string = 'consider the number 42'
+my_third_string = 'consider the number 42'
 ```
  - **Lists:**
 ```
@@ -81,7 +81,7 @@ my_list = [5, 4.6, 'sina']
  - **Dictionaries:**
 ```
 Input:
-variable my dictionary is string age integer twenty one next list string sina integer 5 end of list float three point six
+variable my dictionary is string age integer twenty one next list string sina integer 5 end of list float three point six end of dictionary
 Output:
 my_dictionary = {'age': 21, ['sina', 5]: 3.6}
 ```
