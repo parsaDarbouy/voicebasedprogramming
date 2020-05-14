@@ -74,14 +74,14 @@ my_third_string = 'consider the number forty-two'
  - **Lists:**
 ```
 Input:
-variable my list is list integer five next float four point six next string sina end of list
+variable my list is list integer 5 next float 4 point 6 next string sina end of list
 Output:
 my_list = [5, 4.6, 'sina']
 ```
  - **Dictionaries:**
 ```
 Input:
-variable my dictionary is dictionary string age integer twenty one next list string sina integer 5 end of list float three point six end of dictionary
+variable my dictionary is dictionary string age integer 21 next list string sina integer 5 end of list float 3 point 6 end of dictionary
 Output:
 my_dictionary = {'age': 21, ['sina', 5]: 3.6}
 ```
