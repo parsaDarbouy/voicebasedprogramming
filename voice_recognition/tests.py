@@ -1,6 +1,26 @@
-# import speech_recognition as sr
+import speech_recognition as sr
 from word2number import w2n
 import unittest
+
+
+class VoiceRecognitionTest(unittest.TestCase):
+    def setUp(self):
+        self.r = sr.Recognizer()
+        file = sr.AudioFile('assets/file.wav')
+        with file as source:
+            self.audio = self.r.record(source)
+
+    def test_dictionary(self):
+        self.assertIn("dictionary", self.r.recognize_sphinx(self.audio))
+
+    def test_list(self):
+        self.assertIn("list", self.r.recognize_sphinx(self.audio))
+
+    def test_is(self):
+        self.assertIn("is", self.r.recognize_sphinx(self.audio))
+
+    def test_float(self):
+        self.assertIn("float", self.r.recognize_sphinx(self.audio))
 
 
 class WordToNumberTest(unittest.TestCase):
