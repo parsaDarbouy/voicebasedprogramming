@@ -30,7 +30,7 @@ class VariableDeclaration:
                 input_string[input_string.index('letters') + 1] = inflect.engine().number_to_words(int(number_value))
                 input_string.remove('letters')
         value = str(functools.reduce(lambda first, second: f'{first} {second}', input_string))
-        return value
+        return f'\'{value}\''
 
     def find_last_index_of_string(self, input_list: list) -> int:
         for index, item in enumerate(input_list):
