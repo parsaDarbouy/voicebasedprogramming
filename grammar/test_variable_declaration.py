@@ -22,8 +22,8 @@ class TestVariableDeclaration(unittest.TestCase):
                          'my_first_string_is_sentence = \'my name is sina\'')
         self.assertEqual(VariableDeclaration('variable my second string is string consider the number 42').code,
                          'my_second_string = \'consider the number 42\'')
-        self.assertEqual(VariableDeclaration('variable my third string is string consider the number letters 42').code,
-                         'my_third_string = \'consider the number forty-two\'')
+        self.assertEqual(VariableDeclaration('variable my third string is string consider the letters number letters 42').code,
+                         'my_third_string = \'consider the letters number forty-two\'')
 
     def test_list(self):
         pass
