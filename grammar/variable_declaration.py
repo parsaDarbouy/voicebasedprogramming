@@ -24,11 +24,13 @@ class VariableDeclaration:
 
     @staticmethod
     def parse_string(input_string: list) -> str:
-        if 'letters' in input_string and len(input_string) > input_string.index('letters'):
-            number_value = input_string[input_string.index('letters') + 1]
-            if int(number_value[0]) < 10:
-                input_string[input_string.index('letters') + 1] = inflect.engine().number_to_words(int(number_value))
-                input_string.remove('letters')
+        if 'letters' in input_string and len(input_string) - 1 != input_string.index('letters'):
+            for index, word in enumerate(input_string[:len(input_string) - 1]):
+                if word == 'letters':
+                    number_value = input_string[index + 1]
+                    if 57 >= ord(number_value[0]) >= 10:
+                        input_string[index + 1] = inflect.engine().number_to_words(int(number_value))
+                        input_string.pop(index)
         value = str(functools.reduce(lambda first, second: f'{first} {second}', input_string))
         return f'\'{value}\''
 
