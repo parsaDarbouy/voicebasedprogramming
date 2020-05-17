@@ -67,7 +67,8 @@ class VariableDeclaration:
                 index += 2
             elif this_type == 'string':
                 end_of_string = self.find_last_index_of_string(input_list[index:]) + index
-                this_list.append(self.parse_string(input_list[index:end_of_string]))
+                this_string = self.parse_string(input_list[index:end_of_string])
+                this_list.append(this_string[1:len(this_string) - 1])
                 index += end_of_string - index - 1
             elif this_type == 'list':
                 end_of_list = self.find_last_index_of_list(input_list[index:]) + index
