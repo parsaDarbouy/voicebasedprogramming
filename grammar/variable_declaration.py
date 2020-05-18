@@ -36,9 +36,11 @@ class VariableDeclaration:
 
     def find_last_index_of_string(self, input_list: list) -> int:
         for index, item in enumerate(input_list):
-            if item == 'next' and input_list[index + 1] in self.type:
+            if item == 'next' and input_list[index + 1] in self.variable_types: # problem : next + variable_type can
+                # be part of the string
                 return index
-            if item == 'end' and input_list[index + 1] == 'of' and input_list[index + 2] == 'list':
+            if item == 'end' and input_list[index + 1] == 'of' and input_list[index + 2] == 'list': # problem : end
+                # of list can be a part of the string
                 return index
 
     @staticmethod
@@ -46,6 +48,17 @@ class VariableDeclaration:
         for index, item in enumerate(input_list):
             if item == 'end' and input_list[index + 1] == 'of' and input_list[index + 2] == 'list':
                 return index + 3
+
+    def find_last_index_of_string_in_dictionary(self, input_list: list) -> int:
+        for index, item in enumerate(input_list):
+            if input_list[index + 1] in self.variable_types:
+                return index + 1
+            if item == 'then' and input_list[index + 1] in self.variable_types:  # problem : then + variable_type can
+                # be part of the string
+                return index
+            if item == 'end' and input_list[index + 1] == 'of' and input_list[index + 2] == 'dictionary':  # problem
+                # : end of dictionary can be a part of the string
+                return index
 
     def parse_list(self, input_list: list) -> list:
         this_type, this_list = None, []
@@ -75,6 +88,52 @@ class VariableDeclaration:
                 index += end_of_list - index - 1
         return this_list
 
+    def parse_dictionary(self, input_list: list) -> dict:
+        this_type, this_dict = None, {}
+        index, item = -1, None
+        key_is_set = False
+        while True:
+            index += 1
+            item = input_list[index]
+            if item == 'end' and index + 3 == len(input_list):
+                break
+            elif item == 'then':
+                continue
+            if item in self.variable_types and (input_list[index - 1] != 'list' or index == 0):
+                this_type = item
+                continue
+            elif this_type == 'string':
+                end_of_string = self.find_last_index_of_string_in_dictionary(input_list[index:]) + index
+                if key_is_set:
+                    key_value = self.parse_string(input_list[index:end_of_string])
+                    this_dict[key] = key_value
+                    key_is_set = False
+                else:
+                    key = self.parse_string(input_list[index:end_of_string])
+                    key_is_set = True
+                index += end_of_string - index - 1
+            elif this_type == 'integer':
+                if key_is_set:
+                    key_value = int(item)
+                    this_dict[key] = key_value
+                    key_is_set = False
+                else:
+                    key = int(item)
+                    key_is_set = True
+            elif this_type == 'float':
+                if key_is_set:
+                    key_value = float(f'{item}.{input_list[index + 2]}')
+                    this_dict[key] = key_value
+                    key_is_set = False
+                    index += 2
+                else:
+                    key = float(f'{item}.{input_list[index + 2]}')
+                    key_is_set = True
+                    index += 2
+            elif this_type == 'list':
+                continue
+        return this_dict
+
     def find_value(self) -> str:
         is_keyword_index = self.find_is_keyword_index()
         value = None
@@ -86,6 +145,8 @@ class VariableDeclaration:
             value = self.parse_string(self.command[is_keyword_index + 2:])
         elif self.type == 'list':
             value = self.parse_list(self.command[is_keyword_index + 2:])
+        elif self.type == 'dictionary':
+            value = self.parse_dictionary(self.command[is_keyword_index + 2:])
         return value
 
     def find_name(self) -> str:
@@ -103,3 +164,4 @@ class VariableDeclaration:
     def generate_code(self) -> str:
         code = f'{self.name} = {self.value}'
         return code
+
