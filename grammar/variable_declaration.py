@@ -100,17 +100,18 @@ class VariableDeclaration:
                 break
             elif item == 'then':
                 continue
-            if item in self.variable_types and (input_list[index - 1] != 'list' or index == 0):
+            if item in self.variable_types and input_list[index - 1] != 'list' or index == 0:
                 this_type = item
                 continue
             elif this_type == 'string':
                 end_of_string = self.find_last_index_of_string_in_dictionary(input_list[index:]) + index
+                this_string = self.parse_string(input_list[index:end_of_string])
                 if key_is_set:
-                    key_value = self.parse_string(input_list[index:end_of_string])
+                    key_value = this_string[1:len(this_string) - 1]
                     this_dict[key] = key_value
                     key_is_set = False
                 else:
-                    key = self.parse_string(input_list[index:end_of_string])
+                    key = this_string[1:len(this_string) - 1]
                     key_is_set = True
                 index += end_of_string - index - 1
             elif this_type == 'integer':
@@ -132,7 +133,16 @@ class VariableDeclaration:
                     key_is_set = True
                     index += 2
             elif this_type == 'list':
-                continue
+                end_of_list = self.find_last_index_of_list(input_list[index:]) + index
+                if key_is_set:
+                    key_value = self.parse_list(input_list[index:end_of_list])
+                    this_dict[key] = key_value
+                    key_is_set = False
+                    index += end_of_list - index - 1
+                else:
+                    key = self.parse_list(input_list[index:end_of_list])
+                    key_is_set = True
+                    index += end_of_list - index - 1
         return this_dict
 
     def find_value(self) -> str:
