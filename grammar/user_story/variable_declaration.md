@@ -35,7 +35,7 @@ And the format of the value of the variable is dependent on the type of the vari
   - **Lists**:
  In this case, the user has to say the type of the variable in the list and the value of that and after that, if he/she wants to add other variables, the word *next* has to be said, and at last the words *end of list* has to be said.
   - **Dictionaries**:
- Finally, the user has to say the key and the value, respectively, with the type of them, if he/she wants to add other variables, the word *next* has to be said, and at last the words *end of dictionary* has to be said.
+ Finally, the user has to say the key and the value, respectively, with the type of them, if he/she wants to add other variables, the word *then* has to be said, and at last the words *end of dictionary* has to be said.
 
 ### Examples:
  - **Integer Number:**
