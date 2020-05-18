@@ -1,4 +1,4 @@
-﻿# Variable Declaration
+# Variable Declaration
 ### Overall Format:
 In order to declare any variable in python, user has to say the following format:
 
@@ -35,7 +35,7 @@ And the format of the value of the variable is dependent on the type of the vari
   - **Lists**:
  In this case, the user has to say the type of the variable in the list and the value of that and after that, if he/she wants to add other variables, the word *next* has to be said, and at last the words *end of list* has to be said.
   - **Dictionaries**:
- Finally, the user has to say the key and the value, respectively, with the type of them, and at last the words *end of dictionary* has to be said.
+ Finally, the user has to say the key and the value, respectively, with the type of them, if he/she wants to add other variables, the word *then* has to be said, and at last the words *end of dictionary* has to be said.
 
 ### Examples:
  - **Integer Number:**
@@ -81,7 +81,7 @@ my_list = [5, 4.6, 'sina']
  - **Dictionaries:**
 ```
 Input:
-variable my dictionary is dictionary string age integer 21 next list string sina integer 5 end of list float 3 point 6 end of dictionary
+variable my dictionary is dictionary string age integer 21 then list string sina next integer 5 end of list float 3 point 6 end of dictionary
 Output:
 my_dictionary = {'age': 21, ['sina', 5]: 3.6}
 ```
