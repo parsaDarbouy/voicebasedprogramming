@@ -66,7 +66,7 @@ class VariableDeclaration:
         while True:
             index += 1
             item = input_list[index]
-            if item == 'end' and index + 3 == len(input_list):
+            if item == 'end' and input_list[index+1] == 'of' and input_list[index+2] == 'list':
                 break
             if item == 'next':
                 continue
@@ -100,7 +100,7 @@ class VariableDeclaration:
                 break
             elif item == 'then':
                 continue
-            if item in self.variable_types and input_list[index - 1] != 'list' or index == 0:
+            if item in self.variable_types and (input_list[index - 1] != 'list' or index == 0):
                 this_type = item
                 continue
             elif this_type == 'string':
@@ -135,12 +135,12 @@ class VariableDeclaration:
             elif this_type == 'list':
                 end_of_list = self.find_last_index_of_list(input_list[index:]) + index
                 if key_is_set:
-                    key_value = self.parse_list(input_list[index:end_of_list])
+                    key_value = self.parse_list(input_list[index:])
                     this_dict[key] = key_value
                     key_is_set = False
                     index += end_of_list - index - 1
                 else:
-                    key = self.parse_list(input_list[index:end_of_list])
+                    key = self.parse_list(input_list[index:])
                     key_is_set = True
                     index += end_of_list - index - 1
         return this_dict
@@ -175,4 +175,3 @@ class VariableDeclaration:
     def generate_code(self) -> str:
         code = f'{self.name} = {self.value}'
         return code
-
