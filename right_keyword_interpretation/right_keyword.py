@@ -1,7 +1,9 @@
 import fuzzy
 from difflib import SequenceMatcher
 
-keyword_list = [("def", 0.5, "D1"), ('is', 0.5, "I2")]
+keyword_list = [('def', 0.5, 'D1'), ('is', 0.5, 'I2'), ('variable', 0.5, 'V614'), ('string', 0.5, 'S365'),
+                ('integer', 0.5, 'I532'), ('float', 0.5, 'F432'), ('list', 0.5, 'L232'), ('Dictionary', 0.5, 'D235')]
+
 soundex = fuzzy.Soundex(4)
 
 

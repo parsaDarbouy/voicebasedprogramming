@@ -2,7 +2,7 @@ import fuzzy
 
 soundex = fuzzy.Soundex(4)
 
-list = ['def', 'is']
+list = ['def', 'is', 'variable', 'string', 'integer', 'float', 'list', 'Dictionary']
 
 
 def soundex_generator(list):
