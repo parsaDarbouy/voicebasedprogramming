@@ -1,6 +1,5 @@
 import speech_recognition
 from word2number import w2n
-from word2number.w2n import american_number_system
 
 
 class SphinxRecognizer(object):
@@ -53,5 +52,5 @@ class SphinxRecognizer(object):
     @staticmethod
     def __is_valid_number_pattern(lst):
         for element in lst:
-            if element not in american_number_system:
+            if element not in w2n.american_number_system:
                 raise ValueError
