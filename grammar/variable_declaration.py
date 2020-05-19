@@ -1,3 +1,7 @@
+# May have problem in this parts:
+# Dictionary in dictionary
+# Dictionary in list has not been defined yet
+
 import functools
 
 import inflect
@@ -36,18 +40,12 @@ class VariableDeclaration:
 
     def find_last_index_of_string(self, input_list: list) -> int:
         for index, item in enumerate(input_list):
-            if item == 'next' and input_list[index + 1] in self.variable_types: # problem : next + variable_type can
+            if item == 'next' and input_list[index + 1] in self.variable_types:  # problem : next + variable_type can
                 # be part of the string
                 return index
-            if item == 'end' and input_list[index + 1] == 'of' and input_list[index + 2] == 'list': # problem : end
+            if item == 'end' and input_list[index + 1] == 'of' and input_list[index + 2] == 'list':  # problem : end
                 # of list can be a part of the string
                 return index
-
-    @staticmethod
-    def find_last_index_of_list(input_list: list) -> int:
-        for index, item in enumerate(input_list):
-            if item == 'end' and input_list[index + 1] == 'of' and input_list[index + 2] == 'list':
-                return index + 3
 
     def find_last_index_of_string_in_dictionary(self, input_list: list) -> int:
         for index, item in enumerate(input_list):
@@ -60,17 +58,27 @@ class VariableDeclaration:
                 # : end of dictionary can be a part of the string
                 return index
 
+    @staticmethod
+    def inner_list_check(input_list: list, index: int) -> bool:
+        if input_list[index - 1] != 'list':
+            return True
+        if index == 0:
+            return True
+        if input_list[index - 1] == 'list' and input_list[index - 2] == 'of' and input_list[index - 3] == 'end':
+            return True
+        return False
+
     def parse_list(self, input_list: list) -> list:
         this_type, this_list = None, []
         index, item = -1, None
         while True:
             index += 1
             item = input_list[index]
-            if item == 'end' and input_list[index+1] == 'of' and input_list[index+2] == 'list':
+            if item == 'end' and input_list[index + 1] == 'of' and input_list[index + 2] == 'list':
                 break
             if item == 'next':
                 continue
-            if item in self.variable_types and (input_list[index - 1] != 'list' or index == 0):
+            if item in self.variable_types and self.inner_list_check(input_list, index):
                 this_type = item
                 continue
             if this_type == 'integer':
@@ -84,15 +92,16 @@ class VariableDeclaration:
                 this_list.append(this_string[1:len(this_string) - 1])
                 index += end_of_string - index - 1
             elif this_type == 'list':
-                end_of_list = self.find_last_index_of_list(input_list[index:]) + index
-                this_list.append(self.parse_list(input_list[index:end_of_list]))
-                index += end_of_list - index - 1
-        return this_list
+                parse_list_result = self.parse_list(input_list[index:])
+                this_list.append(parse_list_result[0])
+                index += parse_list_result[1] - 1
+        return [this_list, index + 3]
 
     def parse_dictionary(self, input_list: list) -> dict:
         this_type, this_dict = None, {}
         index, item = -1, None
         key_is_set = False
+        key = None
         while True:
             index += 1
             item = input_list[index]
@@ -100,7 +109,7 @@ class VariableDeclaration:
                 break
             elif item == 'then':
                 continue
-            if item in self.variable_types and (input_list[index - 1] != 'list' or index == 0):
+            if item in self.variable_types and self.inner_list_check(input_list, index):
                 this_type = item
                 continue
             elif this_type == 'string':
@@ -133,16 +142,16 @@ class VariableDeclaration:
                     key_is_set = True
                     index += 2
             elif this_type == 'list':
-                end_of_list = self.find_last_index_of_list(input_list[index:]) + index
                 if key_is_set:
                     key_value = self.parse_list(input_list[index:])
-                    this_dict[key] = key_value
+                    this_dict[key] = key_value[0]
                     key_is_set = False
-                    index += end_of_list - index - 1
+                    index += key_value[1] - 1
                 else:
-                    key = self.parse_list(input_list[index:])
+                    parse_list_result = self.parse_list(input_list[index:])
+                    key = parse_list_result[0]
                     key_is_set = True
-                    index += end_of_list - index - 1
+                    index += parse_list_result[1] - 1
         return this_dict
 
     def find_value(self) -> str:
@@ -155,7 +164,7 @@ class VariableDeclaration:
         elif self.type == 'string':
             value = self.parse_string(self.command[is_keyword_index + 2:])
         elif self.type == 'list':
-            value = self.parse_list(self.command[is_keyword_index + 2:])
+            value = self.parse_list(self.command[is_keyword_index + 2:])[0]
         elif self.type == 'dictionary':
             value = self.parse_dictionary(self.command[is_keyword_index + 2:])
         return value
