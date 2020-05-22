@@ -1,6 +1,6 @@
 import unittest
 
-from variable_declaration import VariableDeclaration
+from grammar.variable_declaration import VariableDeclaration
 
 
 class TestVariableDeclaration(unittest.TestCase):

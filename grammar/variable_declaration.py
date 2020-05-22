@@ -11,7 +11,7 @@ class VariableDeclaration:
 
     def __init__(self, command):
         self.variable_types = ['integer', 'float', 'string', 'list', 'dictionary']
-        self.command = command.split()
+        self.command = command
         self.name = self.find_name()
         self.type = self.find_type()
         self.value = self.find_value()
