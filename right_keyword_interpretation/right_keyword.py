@@ -16,3 +16,6 @@ def right_keyword(word):
         if ratio >= i[1]:
             return key_word
     return word
+
+
+# print(right_keyword("ease"))
