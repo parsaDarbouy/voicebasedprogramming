@@ -7,15 +7,12 @@ keyword_list = [('def', 0.5, 'D1'), ('is', 0.5, 'I2'), ('variable', 0.5, 'V614')
 soundex = fuzzy.Soundex(4)
 
 
-def right_keyword(word):
+def right_keyword(word, keywords):
     sound = soundex(word)
-    for i in keyword_list:
+    for i in keywords:
         key_word = i[0]
         key_word_sound = i[2]
         ratio = SequenceMatcher(None, sound, key_word_sound).ratio()
         if ratio >= i[1]:
             return key_word
     return word
-
-
-# print(right_keyword("ease"))

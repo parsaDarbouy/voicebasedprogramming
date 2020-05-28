@@ -16,14 +16,13 @@ class TestRightKeywordInterpretation(unittest.TestCase):
             soundex_generator(test_case_soundex), test_answer)
 
     def test_right_keyword(self):
-        self.assertEqual(right_keyword("depth"), "def")
-        self.assertEqual(right_keyword("deep"), "def")
-        # self.assertEqual(right_keyword("ease"), "is")
-        # self.assertEqual(right_keyword("Valuable"), "variable")
+        self.assertEqual(right_keyword("depth", [('def', 0.5, 'D1')]), "def")
+        self.assertEqual(right_keyword("deep", [('def', 0.5, 'D1')]), "def")
+        self.assertEqual(right_keyword("Valuable", [('variable', 0.5, 'V614')]), "variable")
 
     def test_keyword_recognition(self):
-        self.assertEqual(keyword_recognition("Valuable dog is teacher 2"), "variable dog is integer 2")
-        self.assertEqual(keyword_recognition("depth Stream"), "def string")
+        self.assertEqual(keyword_recognition("Valuable dog is integer 2"), ["variable", "dog", "is", "integer", "2"])
+        self.assertEqual(keyword_recognition("depth stream"), ["def", "stream"])
 
 
 if __name__ == '__main__':
