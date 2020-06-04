@@ -27,8 +27,10 @@ def keyword_recognition(string):
                 case_0 = 0
 
             elif word == 'define':
+                print(index)
                 answer = answer + [word]
                 index = index + 1
+                print(index)
                 word = words_list[index]
                 word = right_keyword(word, define_function)
                 if word == 'function':
@@ -55,6 +57,7 @@ def keyword_recognition(string):
                 if word == 'end':
                     answer = answer + [word]
                     index = index + 1
+                    print(index)
                     word = words_list[index]
                     word = right_keyword(word, end_of)
                     if word != 'of':
@@ -63,11 +66,13 @@ def keyword_recognition(string):
                     else:  # 'of' has been founded, now 'parameters' has to be found
                         answer = answer + [word]
                         index = index + 1
+                        print(index)
                         word = words_list[index]
                         word = right_keyword(word, parameters)
                         answer = answer + [word]
                         break
         index = index + 1
+        print(index)
         answer = answer + [word]
 
     return answer
