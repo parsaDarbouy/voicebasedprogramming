@@ -22,7 +22,8 @@ class TestRightKeywordInterpretation(unittest.TestCase):
 
     def test_keyword_recognition(self):
         self.assertEqual(keyword_recognition("Valuable dog is integer 2"), ["variable", "dog", "is", "integer", "2"])
-        self.assertEqual(keyword_recognition("depth stream"), ["def", "stream"])
+        self.assertEqual(keyword_recognition('define Pension hello world Pyramids name end of parameters'),
+                         ['define', 'function', 'hello', 'world', 'parameters', 'name', 'end', 'of', 'parameters'])
 
 
 if __name__ == '__main__':
