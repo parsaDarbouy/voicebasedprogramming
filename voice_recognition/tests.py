@@ -9,7 +9,7 @@ class VoiceRecognitionTest(unittest.TestCase):
         file = sr.AudioFile('assets/file.wav')
         with file as source:
             self.audio = self.r.record(source)
-        self.result = self.r.recognize_sphinx(self.audio).split()
+        self.result = self.r.recognize_google(self.audio).split()
 
     def test_dictionary(self):
         self.assertEqual("dictionary", self.result[0])
