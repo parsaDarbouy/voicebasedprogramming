@@ -13,7 +13,7 @@ class SphinxRecognizer(object):
             self.recognizer.adjust_for_ambient_noise(source, duration=self.noise_adjust_duration)
             audio = self.recognizer.listen(source)
         try:
-            self.current_result_text = self.recognizer.recognize_sphinx(audio)
+            self.current_result_text = self.recognizer.recognize_google(audio)
         except speech_recognition.UnknownValueError as e:
             raise e
         except speech_recognition.RequestError as e:
@@ -54,3 +54,7 @@ class SphinxRecognizer(object):
         for element in lst:
             if element not in w2n.american_number_system:
                 raise ValueError
+
+
+sep = SphinxRecognizer()
+print(sep.recognize())
