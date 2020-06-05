@@ -10,9 +10,10 @@ class IfCondition:
         self.compare_types = ['equal to', 'less than', 'greater than', 'less than or equal to', 'greater than or '
                                                                                                 'equal to']
         self.command = command[2:]
-        #print([i.split() for i in self.compare_types])
-        self.first_part = self.dynamicOrNot(command[2:])
-        #self.type = self.find_type()
+        self.is_keyword_index = self.find_is_keyword_index()
+        self.first_part = self.dynamicOrNot(self.command, 'first_part')
+        self.compare_type = self.find_compare_type()
+        self.second_part = self.dynamicOrNot(self.command, 'second_part')
         self.code = self.generate_code()
 
     @staticmethod
@@ -27,22 +28,26 @@ class IfCondition:
         snake_case_name = functools.reduce(lambda first, second: f'{first}_{second}', name)
         return str(snake_case_name)
 
-    def dynamicOrNot(self, command):
+    def dynamicOrNot(self, command, part):
         if command[0] == 'variable':
-            variable = self.find_name()
+            variable = self.find_name(part)
             return variable
 
         else:
             variable_type = self.find_type()
-            return self.find_value(variable_type)
+            return self.find_value(variable_type, part)
 
-    def find_name(self) -> str:
+    def find_name(self, part) -> str:
         """
         This function finds the name of the dynamic variable.
             Returns:
                 The exact name of the variable.
         """
-        end_of_name_index = self.find_is_keyword_index()
+        if part == 'first_part':
+            end_of_name_index = self.is_keyword_index
+        else:
+            end_of_name_index = len(self.command)
+
         this_name = self.convert_to_snake_case(self.command[1:end_of_name_index])
         return this_name
     def find_type(self) -> str:
@@ -53,7 +58,7 @@ class IfCondition:
         """
         variable_type = self.command[0]
         return variable_type
-    def find_value(self , variable_type) -> str:
+    def find_value(self , variable_type, part) -> str:
         """
         This function finds the value of the variable which has to be declared based on the type.
             Returns:
@@ -65,8 +70,11 @@ class IfCondition:
         elif variable_type == 'float':
             value = f'{self.command[1]}.{self.command[3]}'
         elif variable_type == 'string':
-            is_keyword_index = self.find_is_keyword_index()
-            value = self.parse_string(self.command[1: is_keyword_index])
+            if part == 'first_part':
+                end_of_string = self.is_keyword_index
+            else:
+                end_of_string = len(self.command)
+            value = self.parse_string(self.command[1: end_of_string])
         return value
 
     @staticmethod
@@ -95,19 +103,42 @@ class IfCondition:
                 The exact index of the *is* keyword.
         """
         is_keyword_indices = [index for index, value in enumerate(self.command) if value == 'is']
-        is_keyword_index = filter(lambda index: index if self.command[index + 1 : index+3] in [compare_type.split() for
+        is_keyword_index = filter(lambda index: index if self.command[index + 1: index+3] in [compare_type.split() for
                                                         compare_type in self.compare_types] else 0, is_keyword_indices)
+
         return list(is_keyword_index)[0]
+
+    def find_compare_type(self) -> str:
+        is_keyword_index = self.is_keyword_index
+        compare_type = ''
+        if " ".join(self.command[is_keyword_index + 1: is_keyword_index + 3]) == 'equal to':
+            compare_type = '=='
+            self.command = self.command[is_keyword_index + 3:]
+        elif " ".join(self.command[is_keyword_index + 1: is_keyword_index + 6]) == 'less than or equal to':
+            compare_type = '<='
+            self.command = self.command[is_keyword_index + 6:]
+        elif " ".join(self.command[is_keyword_index + 1: is_keyword_index + 6]) == 'greater than or equal to':
+            compare_type = '>='
+            self.command = self.command[is_keyword_index + 6:]
+        elif " ".join(self.command[is_keyword_index + 1: is_keyword_index + 3]) == 'less than':
+            compare_type = '<'
+            self.command = self.command[is_keyword_index + 3:]
+        elif " ".join(self.command[is_keyword_index + 1: is_keyword_index + 3]) == 'greater than':
+            compare_type = '>'
+            self.command = self.command[is_keyword_index + 3:]
+
+        return compare_type
+
+
     def generate_code(self):
         """
         This function generates the final code of the input command.
             Returns:
                 The exact code of the function definition command.
         """
+        code = f'{self.first_part} {self.compare_type} {self.second_part}'
+        return code
 
-        return
 
-a = IfCondition("if condition float 32 point 5 is equal to integer 2".split())
-print(a.first_part)
 
 
