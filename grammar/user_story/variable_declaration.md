@@ -81,7 +81,7 @@ my_list = [5, 4.6, 'sina']
  - **Dictionaries:**
 ```
 Input:
-variable my dictionary is dictionary string age integer 21 then list string sina next integer 5 end of list float 3 point 6 end of dictionary
+variable my dictionary is dictionary string age integer 21 then float 3 point 6 list string sina next integer 5 end of list end of dictionary
 Output:
-my_dictionary = {'age': 21, ['sina', 5]: 3.6}
+my_dictionary = {'age': 21, 3.6: ['sina', 5]}
 ```

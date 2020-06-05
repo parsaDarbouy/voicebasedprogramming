@@ -19,15 +19,34 @@ class VariableDeclaration:
 
     @staticmethod
     def convert_to_snake_case(name: list) -> str:
+        """
+        This function gives a list a words, and concatenates them in snake case format.
+            Args:
+                name: The list of words which will be converted to snake case.
+            Returns:
+                The snake case format of the input list of words.
+        """
         snake_case_name = functools.reduce(lambda first, second: f'{first}_{second}', name)
         return str(snake_case_name)
 
     def find_type(self) -> str:
+        """
+        This function finds the variable which will be declared.
+            Returns:
+                The type of variable of the variable declarationcommand.
+        """
         variable_type = self.command[self.find_is_keyword_index() + 1]
         return variable_type
 
     @staticmethod
     def parse_string(input_string: list) -> str:
+        """
+        This function gives a list a words, and concatenates them and creates a string.
+            Args:
+                input_string: The list of words which will be converted to string.
+            Returns:
+                The string format of the input list of words.
+        """
         if 'letters' in input_string and len(input_string) - 1 != input_string.index('letters'):
             for index, word in enumerate(input_string[:len(input_string) - 1]):
                 if word == 'letters':
@@ -39,6 +58,14 @@ class VariableDeclaration:
         return f'\'{value}\''
 
     def find_last_index_of_string(self, input_list: list) -> int:
+        """
+        This function, when we wants to declare a string in the list, finds the last index of the string.
+            Args:
+                input_list: The list of words which contains the string
+                            and also the remaining command of list declaration.
+            Returns:
+                The last index of the string in the list declaration command.
+        """
         for index, item in enumerate(input_list):
             if item == 'next' and input_list[index + 1] in self.variable_types:  # problem : next + variable_type can
                 # be part of the string
@@ -60,6 +87,16 @@ class VariableDeclaration:
 
     @staticmethod
     def inner_list_check(input_list: list, index: int) -> bool:
+        """
+        This function, in the list declaration, checks
+        whether this index of the list is the last index of the list declaration or not.
+        This will be useful when we have inner lists.
+            Args:
+                input_list: The list of words which contains the inner list declaration and remaining of the command.
+                index: The specified index that should be checked.
+            Returns:
+                If the index is the last index returns true, Otherwise returns false.
+        """
         if input_list[index - 1] != 'list':
             return True
         if index == 0:
@@ -69,6 +106,13 @@ class VariableDeclaration:
         return False
 
     def parse_list(self, input_list: list) -> list:
+        """
+        This function gets the command which is declaring lists, and declare the variables inside the list.
+            Args:
+                input_list: The list of words which contains the list declaration.
+            Returns:
+                The list which has been declared with the input command.
+        """
         this_type, this_list = None, []
         index, item = -1, None
         while True:
@@ -155,6 +199,11 @@ class VariableDeclaration:
         return this_dict
 
     def find_value(self) -> str:
+        """
+        This function finds the value of the variable which has to be declared based on the type.
+            Returns:
+                The exact value of the variable.
+        """
         is_keyword_index = self.find_is_keyword_index()
         value = None
         if self.type == 'integer':
@@ -170,11 +219,21 @@ class VariableDeclaration:
         return value
 
     def find_name(self) -> str:
+        """
+        This function finds the name of the variable which has to be declared.
+            Returns:
+                The exact name of the variable.
+        """
         end_of_name = self.find_is_keyword_index()
         words_of_name = self.command[1:end_of_name]
         return self.convert_to_snake_case(words_of_name)
 
     def find_is_keyword_index(self) -> int:
+        """
+        This function finds the index of the *is* keyword, which can find name value of the variable based on that.
+            Returns:
+                The exact index of the *is* variable.
+        """
         is_keyword_indices = [index for index, value in enumerate(self.command) if value == 'is']
         is_keyword_index = filter(lambda index: index if self.command[index + 1] in self.variable_types else 0,
                                   is_keyword_indices)
@@ -182,5 +241,10 @@ class VariableDeclaration:
         return is_keyword_index
 
     def generate_code(self) -> str:
+        """
+        This function generates the final code of the input command.
+            Returns:
+                The exact code of the variable declaration command.
+        """
         code = f'{self.name} = {self.value}'
         return code
