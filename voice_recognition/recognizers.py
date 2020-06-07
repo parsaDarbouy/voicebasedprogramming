@@ -11,6 +11,7 @@ class SphinxRecognizer(object):
     def recognize(self, digit_allowed=False, *args, **kwargs):
         with speech_recognition.Microphone() as source:
             self.recognizer.adjust_for_ambient_noise(source, duration=self.noise_adjust_duration)
+            print('fuck u')
             audio = self.recognizer.listen(source)
         try:
             self.current_result_text = self.recognizer.recognize_google(audio)
@@ -56,5 +57,3 @@ class SphinxRecognizer(object):
                 raise ValueError
 
 
-sep = SphinxRecognizer()
-print(sep.recognize())

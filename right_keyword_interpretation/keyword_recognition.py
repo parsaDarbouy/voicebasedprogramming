@@ -78,4 +78,3 @@ def keyword_recognition(string):
     return answer
 
 
-print(keyword_recognition('define Pension hello world Pyramids name end of parameters'))

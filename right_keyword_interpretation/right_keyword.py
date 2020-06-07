@@ -1,4 +1,3 @@
-import fuzzy
 from libindic.soundex import Soundex
 from difflib import SequenceMatcher
 
