@@ -3,7 +3,7 @@ import fuzzy
 soundex = fuzzy.Soundex(4)
 
 list = ['def', 'is', 'variable', 'string', 'integer', 'float', 'list', 'Dictionary', 'define', 'function', 'parameters',
-        'end', 'of', 'parameters', 'next']
+        'end', 'of', 'parameters', 'next', 'if', 'condition', 'equal', 'less', 'greater', 'than', 'or ']
 
 
 def soundex_generator(list):
@@ -14,4 +14,4 @@ def soundex_generator(list):
     return keywords_soundex
 
 
-# print(soundex_generator(list))
+print(soundex_generator(list))
