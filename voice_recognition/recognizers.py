@@ -10,7 +10,7 @@ class SphinxRecognizer(object):
     def recognize(self):
         with speech_recognition.Microphone() as source:
             self.recognizer.adjust_for_ambient_noise(source, duration=self.noise_adjust_duration)
-            audio = self.recognizer.ligtisten(source)
+            audio = self.recognizer.listen(source)
         try:
             self.current_result_text = self.recognizer.recognize_google(audio)
         except speech_recognition.UnknownValueError as e:
