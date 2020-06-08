@@ -1,6 +1,6 @@
 from right_keyword_interpretation.right_keyword import right_keyword
 
-keyword_list = [('variable', 0.5, 'V614'), ('define', 0.5, 'D155'), ('if', 0.5, 'I133')]
+keyword_list = [('variable', 0.5, 'V614'), ('define', 0.5, 'D155'), ('if', 0.5, 'I133'), ('end', 0.5, 'E533')]
 
 variable_declaration = {('is', 0.6, 'I2')}
 variable_type = {('string', 0.6, 'S365'),
@@ -14,6 +14,8 @@ end_of = [('of', 0.5, 'O133')]
 if_condition = [('condition', 0.5, 'C535')]
 compare = [('equal', 0.5, 'E245'), ('less', 0.5, 'L245'), ('greater', 0.5, 'G636')]
 type_condition = [('string', 0.6, 'S365'), ('integer', 0.6, 'I532'), ('float', 0.6, 'F432'), ('variable', 0.5, 'V614')]
+
+end_of_function = [('of', 0.5, 'O133'), ('function', 0.5, 'F523')]
 
 
 def keyword_recognition(string):
@@ -45,6 +47,9 @@ def keyword_recognition(string):
                 word = right_keyword(word, if_condition)
                 if word == 'condition':
                     case_0 = 2
+
+            elif word == 'end':
+                case_0 = 3
 
 
         elif case_0 == 0:
@@ -122,9 +127,15 @@ def keyword_recognition(string):
                 if word in ['variable', 'string', 'integer', 'float']:
                     case_1 == 4
 
+        elif case_0 == 3:
+            word = right_keyword(word, end_of_function[0])
+            if word == 'of':
+                answer = answer + [word]
+                index = index + 1
+                word = words_list[index]
+                word = right_keyword(word, end_of_function[1])
+
         index = index + 1
         answer = answer + [word]
 
     return answer
-
-
