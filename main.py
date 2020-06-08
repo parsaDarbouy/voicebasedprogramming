@@ -1,4 +1,4 @@
-from voice_recognition.recognizers import SphinxRecognizer
+from voice_recognition.recognizers import GoogleRecognizer
 from right_keyword_interpretation.keyword_recognition import keyword_recognition
 from grammar.variable_declaration import VariableDeclaration
 
@@ -10,6 +10,7 @@ from tkinter import filedialog
 class Root(Tk):
     def __init__(self):
         super(Root, self).__init__()
+        self.indent = 0
         self.title("Python Tkinter Dialog Widget")
         self.minsize(640, 400)
         self.wm_iconbitmap('icon.ico')
@@ -42,11 +43,12 @@ class Root(Tk):
         print(self.filename)
         if self.filename is not None:
             file = open(self.filename, "a")
-            recognizer = SphinxRecognizer()
+            recognizer = GoogleRecognizer()
             text = recognizer.recognize()
             words_list = keyword_recognition(text)
+            print(words_list)
             obj = VariableDeclaration(words_list)
-            file.write(obj.code)
+            file.write((self.indent * '\t') + obj.code + "\n")
 
 
 root = Root()
