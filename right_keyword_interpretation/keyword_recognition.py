@@ -128,12 +128,12 @@ def keyword_recognition(string):
                     case_1 == 4
 
         elif case_0 == 3:
-            word = right_keyword(word, end_of_function[0])
+            word = right_keyword(word, [end_of_function[0]])
             if word == 'of':
                 answer = answer + [word]
                 index = index + 1
                 word = words_list[index]
-                word = right_keyword(word, end_of_function[1])
+                word = right_keyword(word, [end_of_function[1]])
 
         index = index + 1
         answer = answer + [word]

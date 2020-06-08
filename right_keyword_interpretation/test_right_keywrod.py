@@ -21,7 +21,9 @@ class TestRightKeywordInterpretation(unittest.TestCase):
         self.assertEqual(right_keyword("Greta", [('greater', 0.5, 'G636')]), "greater")
 
     def test_keyword_recognition(self):
-        self.assertEqual(keyword_recognition("Valuable dog is integer 2"), ["variable", "dog", "is", "integer", "2"])
+        self.assertEqual(keyword_recognition("Valuable dog is integer 2"),
+                         ["variable", "dog", "is", "integer", "2"])
+
         self.assertEqual(keyword_recognition('define Pension hello world Pyramids name end of parameters'),
                          ['define', 'function', 'hello', 'world', 'parameters', 'name', 'end', 'of', 'parameters'])
 
@@ -33,6 +35,12 @@ class TestRightKeywordInterpretation(unittest.TestCase):
 
         self.assertEqual(keyword_recognition("if action integer 20 less than integer 22"),
                          ["if", "condition", "integer", "20", "less", "than", "integer", "22"])
+
+        self.assertEqual(keyword_recognition("end of Finches"),
+                         ["end", "of", "function"])
+
+        self.assertEqual(keyword_recognition("end of Pension"),
+                         ["end", "of", "function"])
 
 
 if __name__ == '__main__':
