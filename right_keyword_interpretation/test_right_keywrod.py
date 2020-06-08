@@ -16,14 +16,31 @@ class TestRightKeywordInterpretation(unittest.TestCase):
             soundex_generator(test_case_soundex), test_answer)
 
     def test_right_keyword(self):
-        self.assertEqual(right_keyword("depth", [('def', 0.5, 'D1')]), "def")
-        self.assertEqual(right_keyword("deep", [('def', 0.5, 'D1')]), "def")
         self.assertEqual(right_keyword("Valuable", [('variable', 0.5, 'V614')]), "variable")
+        self.assertEqual(right_keyword("action", [('condition', 0.5, 'C535')]), "condition")
+        self.assertEqual(right_keyword("Greta", [('greater', 0.5, 'G636')]), "greater")
 
     def test_keyword_recognition(self):
-        self.assertEqual(keyword_recognition("Valuable dog is integer 2"), ["variable", "dog", "is", "integer", "2"])
+        self.assertEqual(keyword_recognition("Valuable dog is integer 2"),
+                         ["variable", "dog", "is", "integer", "2"])
+
         self.assertEqual(keyword_recognition('define Pension hello world Pyramids name end of parameters'),
                          ['define', 'function', 'hello', 'world', 'parameters', 'name', 'end', 'of', 'parameters'])
+
+        self.assertEqual(keyword_recognition("if condition Valuable temp number equal to integer 22"),
+                         ["if", "condition", "variable", "temp", "number", "equal", "to", "integer", "22"])
+
+        self.assertEqual(keyword_recognition("if condition integer 22 Greta than or equal to integer 22"),
+                         ["if", "condition", "integer", "22", "greater", "than", "or", "equal", "to", "integer", "22"])
+
+        self.assertEqual(keyword_recognition("if action integer 20 less than integer 22"),
+                         ["if", "condition", "integer", "20", "less", "than", "integer", "22"])
+
+        self.assertEqual(keyword_recognition("end of Finches"),
+                         ["end", "of", "function"])
+
+        self.assertEqual(keyword_recognition("end of Pension"),
+                         ["end", "of", "function"])
 
 
 if __name__ == '__main__':

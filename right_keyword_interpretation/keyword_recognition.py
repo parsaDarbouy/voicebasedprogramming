@@ -1,6 +1,6 @@
 from right_keyword_interpretation.right_keyword import right_keyword
 
-keyword_list = [('variable', 0.5, 'V614'), ('define', 0.5, 'D155')]
+keyword_list = [('variable', 0.5, 'V614'), ('define', 0.5, 'D155'), ('if', 0.5, 'I133'), ('end', 0.5, 'E533')]
 
 variable_declaration = {('is', 0.6, 'I2')}
 variable_type = {('string', 0.6, 'S365'),
@@ -10,6 +10,12 @@ define_function = [('function', 0.5, 'F523')]
 parameters = [('parameters', 0.7, 'P653')]
 next_or_end_parameter = [('next', 0.6, 'N233'), ('end', 0.5, 'E533')]
 end_of = [('of', 0.5, 'O133')]
+
+if_condition = [('condition', 0.5, 'C535')]
+compare = [('equal', 0.5, 'E245'), ('less', 0.5, 'L245'), ('greater', 0.5, 'G636')]
+type_condition = [('string', 0.6, 'S365'), ('integer', 0.6, 'I532'), ('float', 0.6, 'F432'), ('variable', 0.5, 'V614')]
+
+end_of_function = [('of', 0.5, 'O133'), ('function', 0.5, 'F523')]
 
 
 def keyword_recognition(string):
@@ -27,14 +33,24 @@ def keyword_recognition(string):
                 case_0 = 0
 
             elif word == 'define':
-                print(index)
                 answer = answer + [word]
                 index = index + 1
-                print(index)
                 word = words_list[index]
                 word = right_keyword(word, define_function)
                 if word == 'function':
                     case_0 = 1
+
+            elif word == "if":
+                answer = answer + [word]
+                index = index + 1
+                word = words_list[index]
+                word = right_keyword(word, if_condition)
+                if word == 'condition':
+                    case_0 = 2
+
+            elif word == 'end':
+                case_0 = 3
+
 
         elif case_0 == 0:
             if case_1 == -1:
@@ -57,7 +73,6 @@ def keyword_recognition(string):
                 if word == 'end':
                     answer = answer + [word]
                     index = index + 1
-                    print(index)
                     word = words_list[index]
                     word = right_keyword(word, end_of)
                     if word != 'of':
@@ -66,15 +81,61 @@ def keyword_recognition(string):
                     else:  # 'of' has been founded, now 'parameters' has to be found
                         answer = answer + [word]
                         index = index + 1
-                        print(index)
                         word = words_list[index]
                         word = right_keyword(word, parameters)
                         answer = answer + [word]
                         break
+
+        elif case_0 == 2:
+            if case_1 == -1:
+                word = right_keyword(word, type_condition)
+                if word in ['variable', 'string', 'integer', 'float']:
+                    case_1 = 0
+
+            elif case_1 == 0:
+                word = right_keyword(word, compare)
+                if word in ['equal', 'less', 'greater']:
+                    case_1 = 1
+
+            elif case_1 == 1:
+                word = right_keyword(word, [('than', 0.7, 'T536')])
+                if word == 'than':
+                    case_1 = 2
+                elif word == 'to':
+                    case_1 = 3
+
+            elif case_1 == 2:
+                temp_word = right_keyword(word, [('or ', 0.5, 'O636')])
+                if temp_word == 'or':
+                    answer = answer + [word]
+                    index = index + 1
+                    word = words_list[index]
+                    word = right_keyword(word, [('equal', 0.5, 'E245')])
+                    if word == 'equal':
+                        answer = answer + [word]
+                        index = index + 1
+                        word = words_list[index]
+                        if word == 'to':
+                            case_1 = 3
+                else:
+                    word = right_keyword(word, type_condition)
+                    if word in ['variable', 'string', 'integer', 'float']:
+                        case_1 = 4
+
+            elif case_1 == 3:
+                word = right_keyword(word, type_condition)
+                if word in ['variable', 'string', 'integer', 'float']:
+                    case_1 == 4
+
+        elif case_0 == 3:
+            word = right_keyword(word, [end_of_function[0]])
+            if word == 'of':
+                answer = answer + [word]
+                index = index + 1
+                word = words_list[index]
+                word = right_keyword(word, [end_of_function[1]])
+
         index = index + 1
-        print(index)
         answer = answer + [word]
 
     return answer
-
-
