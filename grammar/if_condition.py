@@ -54,10 +54,11 @@ class IfCondition:
         """
         This function finds the variable which will be declared.
             Returns:
-                The type of variable of the variable declarationcommand.
+                The type of variable of the variable declaration command.
         """
         variable_type = self.command[0]
         return variable_type
+
     def find_value(self , variable_type, part) -> str:
         """
         This function finds the value of the variable which has to be declared based on the type.
