@@ -1,8 +1,8 @@
 from builtins import Exception
 
-from if_condition import IfCondition
-from function_definition import FunctionDefinition
-from variable_declaration import VariableDeclaration
+from .if_condition import IfCondition
+from .function_definition import FunctionDefinition
+from .variable_declaration import VariableDeclaration
 
 
 class CommandToCode:

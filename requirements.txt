@@ -1,0 +1,6 @@
+PyAudio==0.2.11
+SpeechRecognition==3.8.1
+fuzzy==1.2.2
+inflect==4.1.0
+libindic.soundex==1.0.2
+libindic.utils==1.0.3
