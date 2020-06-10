@@ -19,7 +19,7 @@ In order to define any IF condition in python, user has to say the following for
 
 for example:
 
-    if condition variable temp number equal to integer 22
+    if condition variable temp number is equal to integer 22
 
 and the code which will be generated is:
 
