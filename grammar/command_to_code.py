@@ -1,3 +1,5 @@
+from builtins import Exception
+
 from if_condition import IfCondition
 from function_definition import FunctionDefinition
 from variable_declaration import VariableDeclaration
@@ -39,4 +41,4 @@ class CommandToCode:
         elif self.command[0] == 'end' and self.command[1] == 'of' and (self.command[2] == 'function' or self.command[2] == 'if'):
             return ''
         else:
-            return 'Command format is wrong'
+            raise Exception("Invalid Format")

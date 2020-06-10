@@ -1,6 +1,6 @@
 from voice_recognition.recognizers import GoogleRecognizer
 from right_keyword_interpretation.keyword_recognition import keyword_recognition
-from grammar.variable_declaration import VariableDeclaration
+from grammar.command_to_code import CommandToCode
 
 from tkinter import *
 from tkinter import ttk
@@ -11,6 +11,7 @@ class Root(Tk):
     def __init__(self):
         super(Root, self).__init__()
         self.recognizer = GoogleRecognizer()
+        self.code_converter = CommandToCode()
         self.indent = 0
         self.indent_phrases = ["if condition", "define function"]
         self.revert_indent_phrases = ["end of if", "end of function"]
@@ -52,8 +53,8 @@ class Root(Tk):
                 self.indent += 1
             elif ' '.join(words_list[-3:]) in self.revert_indent_phrases and self.indent - 1 >= 0:
                 self.indent -= 1
-            obj = VariableDeclaration(words_list)
-            file.write((self.indent * '\t') + obj.code + "\n")
+            obj = self.code_converter.set_command(words_list)
+            file.write((self.indent * '\t') + obj.generate_code() + "\n")
 
 
 root = Root()
