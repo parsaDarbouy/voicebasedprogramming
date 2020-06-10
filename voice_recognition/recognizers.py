@@ -3,6 +3,7 @@ import speech_recognition
 
 class GoogleRecognizer(object):
     def __init__(self, noise_adjust_duration=5):
+        self.recognizer = speech_recognition.Recognizer()
         self.noise_adjust_duration = noise_adjust_duration
         self.current_result_text = ""
 

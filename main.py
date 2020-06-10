@@ -49,12 +49,12 @@ class Root(Tk):
             file = open(self.filename, "a")
             text = self.recognizer.recognize()
             words_list = keyword_recognition(text)
+            self.code_converter.set_command(words_list)
+            if ' '.join(words_list[-3:]) in self.revert_indent_phrases and self.indent - 1 >= 0:
+                self.indent -= 1
+            file.write((self.indent * '\t') + self.code_converter.generate_code() + "\n")
             if ' '.join(words_list[:2]) in self.indent_phrases:
                 self.indent += 1
-            elif ' '.join(words_list[-3:]) in self.revert_indent_phrases and self.indent - 1 >= 0:
-                self.indent -= 1
-            obj = self.code_converter.set_command(words_list)
-            file.write((self.indent * '\t') + obj.generate_code() + "\n")
 
 
 root = Root()
