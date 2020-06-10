@@ -10,7 +10,10 @@ from tkinter import filedialog
 class Root(Tk):
     def __init__(self):
         super(Root, self).__init__()
+        self.recognizer = GoogleRecognizer()
         self.indent = 0
+        self.indent_phrases = ["if condition", "define function"]
+        self.revert_indent_phrases = ["end of if", "end of function"]
         self.title("Python Tkinter Dialog Widget")
         self.minsize(640, 400)
         self.wm_iconbitmap('icon.ico')
@@ -43,10 +46,12 @@ class Root(Tk):
         print(self.filename)
         if self.filename is not None:
             file = open(self.filename, "a")
-            recognizer = GoogleRecognizer()
-            text = recognizer.recognize()
+            text = self.recognizer.recognize()
             words_list = keyword_recognition(text)
-            print(words_list)
+            if ' '.join(words_list[:2]) in self.indent_phrases:
+                self.indent += 1
+            elif ' '.join(words_list[-3:]) in self.revert_indent_phrases and self.indent - 1 >= 0:
+                self.indent -= 1
             obj = VariableDeclaration(words_list)
             file.write((self.indent * '\t') + obj.code + "\n")
 
