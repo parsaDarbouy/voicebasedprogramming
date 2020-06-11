@@ -151,7 +151,7 @@ class VariableDeclaration:
 
     def parse_dictionary(self, input_list: list) -> dict:
         """
-                This function gets the command which is declaring dictionary, and declare the variables inside the list.
+                This function gets the command which is declaring dictionary, and declare the variables inside the dictionary.
                     Args:
                         input_list: The list of words which contains the dictionary declaration.
                     Returns:
