@@ -75,6 +75,14 @@ class VariableDeclaration:
                 return index
 
     def find_last_index_of_string_in_dictionary(self, input_list: list) -> int:
+        """
+                This function, when we wants to declare a string in the dictionary, finds the last index of the string.
+                    Args:
+                        input_list: The list of words which contains the string
+                                    and also the remaining command of dictionary declaration.
+                    Returns:
+                        The last index of the string in the dictionary declaration command.
+                """
         for index, item in enumerate(input_list):
             if input_list[index + 1] in self.variable_types:
                 return index + 1
@@ -142,6 +150,13 @@ class VariableDeclaration:
         return [this_list, index + 3]
 
     def parse_dictionary(self, input_list: list) -> dict:
+        """
+                This function gets the command which is declaring dictionary, and declare the variables inside the list.
+                    Args:
+                        input_list: The list of words which contains the dictionary declaration.
+                    Returns:
+                        The dictionary which has been declared with the input command.
+                """
         this_type, this_dict = None, {}
         index, item = -1, None
         key_is_set = False
