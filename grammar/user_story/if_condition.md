@@ -12,6 +12,7 @@ In order to define any IF condition in python, user has to say the following for
 
 `{type_of_the_compare}` can be:
 - `equal to`
+- `not equal to`
 - `less than`
 - `greater than`
 - `less than or equal to`
