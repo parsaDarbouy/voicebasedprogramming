@@ -7,8 +7,8 @@ class IfCondition:
 
     def __init__(self, command):
         self.variable_types = ['integer', 'float', 'string']   # dictionary and list need to be added
-        self.compare_types = ['equal to', 'less than', 'greater than', 'less than or equal to', 'greater than or '
-                                                                                                'equal to']
+        self.compare_types = ['equal to', 'not equal to', 'less than', 'greater than', 'less than or equal to',
+                              'greater than or ', 'equal to']
         self.command = command[2:]
         self.is_keyword_index = self.find_is_keyword_index()
         self.first_part = self.dynamicOrNot(self.command, 'first_part')
@@ -104,9 +104,9 @@ class IfCondition:
                 The exact index of the *is* keyword.
         """
         is_keyword_indices = [index for index, value in enumerate(self.command) if value == 'is']
-        is_keyword_index = filter(lambda index: index if self.command[index + 1: index+3] in [compare_type.split() for
+        is_keyword_index = filter(lambda index: index if self.command[index + 1: index+3] or self.command[index + 1: index+4]
+                                                         in [compare_type.split() for
                                                         compare_type in self.compare_types] else 0, is_keyword_indices)
-
         return list(is_keyword_index)[0]
 
     def find_compare_type(self) -> str:
@@ -115,6 +115,9 @@ class IfCondition:
         if " ".join(self.command[is_keyword_index + 1: is_keyword_index + 3]) == 'equal to':
             compare_type = '=='
             self.command = self.command[is_keyword_index + 3:]
+        elif " ".join(self.command[is_keyword_index + 1: is_keyword_index + 4]) == 'not equal to':
+            compare_type = '!='
+            self.command = self.command[is_keyword_index + 4:]
         elif " ".join(self.command[is_keyword_index + 1: is_keyword_index + 6]) == 'less than or equal to':
             compare_type = '<='
             self.command = self.command[is_keyword_index + 6:]
@@ -137,9 +140,8 @@ class IfCondition:
             Returns:
                 The exact code of the function definition command.
         """
-        code = f'{self.first_part} {self.compare_type} {self.second_part}'
+        code = f'if {self.first_part} {self.compare_type} {self.second_part}:'
         return code
-
 
 
 
