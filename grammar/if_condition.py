@@ -29,6 +29,13 @@ class IfCondition:
         return str(snake_case_name)
 
     def dynamicOrNot(self, command, part):
+        """
+        This function checks if we are uding a dynamic variable or not
+            Args:
+                part: a string that shows if we are working on the first part of the if statement or after that.
+            Returns:
+                first or second part of if condition
+        """
         if command[0] == 'variable':
             variable = self.find_name(part)
             return variable
@@ -110,6 +117,11 @@ class IfCondition:
         return list(is_keyword_index)[0]
 
     def find_compare_type(self) -> str:
+        """
+        This function finds the compare type that has been declared
+            Returns:
+                right python format of that compare type.
+        """
         is_keyword_index = self.is_keyword_index
         compare_type = ''
         if " ".join(self.command[is_keyword_index + 1: is_keyword_index + 3]) == 'equal to':
