@@ -32,7 +32,7 @@ class IfCondition:
         """
         This function checks if we are uding a dynamic variable or not
             Args:
-                part: a string that shows if we are working on the first part of the if statement or after that.
+                part: a string that shows if we are working on the first part of the if statement or second part.
             Returns:
                 first or second part of if condition
         """
