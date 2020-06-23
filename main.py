@@ -17,7 +17,6 @@ class Root(Tk):
         self.revert_indent_phrases = ["end of if", "end of function"]
         self.title("Python Tkinter Dialog Widget")
         self.minsize(640, 400)
-        self.wm_iconbitmap('icon.ico')
         self.filename = None
 
         self.labelFrame = ttk.LabelFrame(self, text="Open File")

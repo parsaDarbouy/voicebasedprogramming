@@ -44,13 +44,21 @@ and the output will be:
     
 for function calls, user has to follow the format below:
     
-    function call {name_of_the_function} parameters {name_of_the_parameters} end of parameters
+    function call {name_of_the_function} parameters {type_of_variable} {name_of_the_parameters} end of parameters
     
 and also between every parameter, the user has to say `next`. 
  for example:
 
-    function call hello world parameters name end of parameters
+    function call hello world parameters variable name end of parameters
 
 and the code which will be generated is:
 
     hello_world(name)
+    
+another example:
+
+    function call hello world parameters string name end of parameters
+
+and the code which will be generated is:
+
+    hello_world('name')

@@ -1,5 +1,5 @@
 import functools
-from grammar import variable_declaration
+from grammar.variable_declaration import VariableDeclaration
 
 
 class ReturnFunction:
@@ -35,7 +35,7 @@ class ReturnFunction:
             Returns:
                 The final output of the input command for static variables.
         """
-        temp_command = variable_declaration.VariableDeclaration(['variable', '_', 'is'] + self.command[1:])
+        temp_command = VariableDeclaration(['variable', '_', 'is'] + self.command[1:])
         value = functools.reduce(lambda first, second: f'{first} {second}', (temp_command.code.split())[2:])
         return f'return {value}'
 
