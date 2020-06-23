@@ -23,6 +23,7 @@ For the type of the variable, 5 options are available:
 | Strings            | string     |
 | Lists              | list       |
 | Dictionaries       | Dictionary |
+| Variable           | variable   |
 
 And the format of the value of the variable is dependent on the type of the variable:
 
@@ -36,7 +37,8 @@ And the format of the value of the variable is dependent on the type of the vari
  In this case, the user has to say the type of the variable in the list and the value of that and after that, if he/she wants to add other variables, the word *next* has to be said, and at last the words *end of list* has to be said.
   - **Dictionaries**:
  Finally, the user has to say the key and the value, respectively, with the type of them, if he/she wants to add other variables, the word *then* has to be said, and at last the words *end of dictionary* has to be said.
-
+  - **variables**:
+ If user wants to set a variable equal to another variable, user has to say the exact name of the second variable.
 ### Examples:
  - **Integer Number:**
 ```
@@ -85,3 +87,9 @@ variable my dictionary is dictionary string age integer 21 then float 3 point 6 
 Output:
 my_dictionary = {'age': 21, 3.6: ['sina', 5]}
 ```
+ - **Dictionaries:**
+```
+Input:
+variable my first variable is variable my second variable
+Output:
+my_first_variable = my_second_variable
