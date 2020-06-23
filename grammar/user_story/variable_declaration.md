@@ -87,7 +87,7 @@ variable my dictionary is dictionary string age integer 21 then float 3 point 6 
 Output:
 my_dictionary = {'age': 21, 3.6: ['sina', 5]}
 ```
- - **Dictionaries:**
+ - **Variables:**
 ```
 Input:
 variable my first variable is variable my second variable
