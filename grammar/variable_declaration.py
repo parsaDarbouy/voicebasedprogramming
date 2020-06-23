@@ -10,7 +10,7 @@ import inflect
 class VariableDeclaration:
 
     def __init__(self, command):
-        self.variable_types = ['integer', 'float', 'string', 'list', 'dictionary', 'variable']
+        self.variable_types = ['integer', 'float', 'string', 'list', 'dictionary', 'variable', 'operation']
         self.command = command
         self.name = self.find_name()
         self.type = self.find_type()
@@ -216,6 +216,8 @@ class VariableDeclaration:
     def variable_name(self, input_list: list) -> str:
         """
                 This function finds name of the second variable declared.
+                    Args:
+                        input_list: The list of words which contains the variable name.
                     Returns:
                         The name of the second variable in snake case.
                 """
@@ -241,7 +243,122 @@ class VariableDeclaration:
             value = self.parse_dictionary(self.command[is_keyword_index + 2:])
         elif self.type == 'variable':
             value = self.variable_name(self.command[is_keyword_index + 2:])
+        elif self.type == 'operation':
+            value = self.find_operation(self.command[is_keyword_index + 2:])
         return value
+
+    def find_operation(self, input_list: list) -> str:
+        """
+                This function finds value of right side of the operation.
+                    Args:
+                        input_list: list of words which contain the whole operation.
+                    Returns:
+                        A string which shows right side of the operation.
+                """
+        total_value = None
+        if input_list[0] == 'add':
+            to_keyword_index = self.find_keyword_to_index(input_list)
+            variables = self.second_part(input_list, to_keyword_index)
+            first_variable = variables[0]
+            second_variable = variables[1]
+            total_value = f'{first_variable} + {second_variable}'
+        elif input_list[0] == 'subtract':
+            from_keyword_index = self.find_keyword_from_index(input_list)
+            variables = self.second_part(input_list, from_keyword_index)
+            first_variable = variables[0]
+            second_variable = variables[1]
+            total_value = f'{first_variable} - {second_variable}'
+        elif input_list[0] == 'multiply':
+            by_keyword_index = self.find_keyword_by_index(input_list)
+            variables = self.second_part(input_list, by_keyword_index)
+            first_variable = variables[0]
+            second_variable = variables[1]
+            total_value = f'{first_variable} * {second_variable}'
+        elif input_list[0] == 'divide':
+            by_keyword_index = self.find_keyword_by_index(input_list)
+            variables = self.second_part(input_list, by_keyword_index)
+            first_variable = variables[0]
+            second_variable = variables[1]
+            total_value = f'{first_variable} / {second_variable}'
+        return total_value
+
+    def second_part(self, input_list: list, keyword_index: int) -> tuple:
+        """
+                This function finds both variable values declared in right side of the operation.
+                    Args:
+                        input_list: list of words which contain the whole operation.
+                        keyword_index: type of the variable declared.
+                    Returns:
+                        The value of the both variables on the right side of the operation.
+                """
+        first_type = input_list[1]
+        first_variable = self.second_part_values(first_type, input_list[1: keyword_index])
+        second_type = input_list[keyword_index + 1]
+        second_variable = self.second_part_values(second_type, input_list[keyword_index + 1:])
+        return first_variable, second_variable
+
+    def second_part_values(self, variable_type: str, input_list: list) -> str:
+        """
+                This function finds value of each variable in right side of the operation.
+                    Args:
+                        input_list: list of words which contain the variable type and name/value.
+                        variable_type: type of the variable declared.
+                    Returns:
+                        The value of the variable.
+                """
+        if variable_type == 'integer':
+            value = input_list[1]
+        elif variable_type == 'float':
+            value = f'{input_list[1]}.{input_list[3]}'
+        elif variable_type == 'string':
+            value = self.parse_string(input_list[1:])
+        elif variable_type == 'list':
+            value = self.parse_list(input_list[1:])[0]
+        elif variable_type == 'variable':
+            value = self.variable_name(input_list[1:])
+        return value
+
+    def find_keyword_to_index(self, input_list: list):
+        """
+                This function finds the index of the *to* keyword, which can find name value of the variables based on that.
+                    Args:
+                        input_list: list of words which contain the whole operation.
+                    Returns:
+                        The exact index of the *to* variable.
+                """
+        to_keyword_indices = [index for index, value in enumerate(input_list) if value == 'to']
+        to_keyword_index = filter(lambda index: index if input_list[index + 1] in self.variable_types[:-1] else 0,
+                                  to_keyword_indices)
+        to_keyword_index = max(list(to_keyword_index))
+        return to_keyword_index
+
+    def find_keyword_from_index(self, input_list: list):
+        """
+                This function finds the index of the *from* keyword, which can find name value of the variables based on that.
+                    Args:
+                        input_list: list of words which contain the whole operation.
+                    Returns:
+                        The exact index of the *from* variable.
+                """
+        from_keyword_indices = [index for index, value in enumerate(input_list) if value == 'from']
+        from_keyword_index = filter(lambda index: index if input_list[index + 1] in self.variable_types[:-1] else 0,
+                                    from_keyword_indices)
+        from_keyword_index = max(list(from_keyword_index))
+        return from_keyword_index
+
+    def find_keyword_by_index(self, input_list: list):
+        """
+                This function finds the index of the *by* keyword, which can find name value of the variables based on that.
+                    Args:
+                        input_list: list of words which contain the whole operation.
+                    Returns:
+                        The exact index of the *by* variable.
+                """
+        by_keyword_indices = [index for index, value in enumerate(input_list) if value == 'by']
+        by_keyword_index = filter(lambda index: index if input_list[index + 1] in self.variable_types[:-1] else 0,
+                                  by_keyword_indices)
+        by_keyword_index = max(list(by_keyword_index))
+        return by_keyword_index
 
     def find_name(self) -> str:
         """
@@ -273,5 +390,4 @@ class VariableDeclaration:
         """
         code = f'{self.name} = {self.value}'
         return code
-
 
