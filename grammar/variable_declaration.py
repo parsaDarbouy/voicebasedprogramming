@@ -10,7 +10,7 @@ import inflect
 class VariableDeclaration:
 
     def __init__(self, command):
-        self.variable_types = ['integer', 'float', 'string', 'list', 'dictionary']
+        self.variable_types = ['integer', 'float', 'string', 'list', 'dictionary', 'variable']
         self.command = command
         self.name = self.find_name()
         self.type = self.find_type()
@@ -213,6 +213,14 @@ class VariableDeclaration:
                     index += parse_list_result[1] - 1
         return this_dict
 
+    def variable_name(self, input_list: list) -> str:
+        """
+                This function finds name of the second variable declared.
+                    Returns:
+                        The name of the second variable in snake case.
+                """
+        return self.convert_to_snake_case(input_list)
+
     def find_value(self) -> str:
         """
         This function finds the value of the variable which has to be declared based on the type.
@@ -231,6 +239,8 @@ class VariableDeclaration:
             value = self.parse_list(self.command[is_keyword_index + 2:])[0]
         elif self.type == 'dictionary':
             value = self.parse_dictionary(self.command[is_keyword_index + 2:])
+        elif self.type == 'variable':
+            value = self.variable_name(self.command[is_keyword_index + 2:])
         return value
 
     def find_name(self) -> str:
@@ -263,3 +273,5 @@ class VariableDeclaration:
         """
         code = f'{self.name} = {self.value}'
         return code
+
+
