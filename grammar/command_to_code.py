@@ -3,6 +3,7 @@ from builtins import Exception
 from .if_condition import IfCondition
 from .function_definition import FunctionDefinition
 from .variable_declaration import VariableDeclaration
+from .return_function import ReturnFunction
 
 
 class CommandToCode:
@@ -34,6 +35,8 @@ class CommandToCode:
             return 'Command has not been assigned.'
         elif self.command[0] == 'variable':
             return VariableDeclaration(self.command).code
+        elif self.command[0] == 'return':
+            return ReturnFunction(self.command).code
         elif self.command[0] == 'if' and self.command[1] == 'condition':
             return IfCondition(self.command).code
         elif self.command[0] == 'define' and self.command[1] == 'function':
