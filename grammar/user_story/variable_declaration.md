@@ -93,3 +93,4 @@ Input:
 variable my first variable is variable my second variable
 Output:
 my_first_variable = my_second_variable
+```
