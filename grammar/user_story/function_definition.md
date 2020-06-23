@@ -15,3 +15,29 @@ and the code which will be generated is:
 
 and after that, the body of the function should be defined. Finally, when the function is finished, the user has to say
 `end of function`.
+
+when the function is finished, just before `end of function` keyword, user can return a static or dynamic variable with
+the command below:
+if he/she wants to return static variable, he/she has to say:
+
+    return [type of variable] [value of that]
+    
+for example:
+
+    return string hello world
+    
+and the output will be:
+
+    return 'hello world'
+    
+and, finally, he/she wants to return dynamic variable, he/she has to say:
+
+    return variable [name of variable]
+    
+for example:
+
+    return variable hello world
+    
+and the output will be:
+
+    return hello_world
