@@ -20,7 +20,7 @@ when the function is finished, just before `end of function` keyword, user can r
 the command below:
 if he/she wants to return static variable, he/she has to say:
 
-    return [type of variable] [value of that]
+    return {type of variable} {value of that}
     
 for example:
 
@@ -32,7 +32,7 @@ and the output will be:
     
 and, finally, he/she wants to return dynamic variable, he/she has to say:
 
-    return variable [name of variable]
+    return variable {name of variable}
     
 for example:
 
@@ -41,3 +41,16 @@ for example:
 and the output will be:
 
     return hello_world
+    
+for function calls, user has to follow the format below:
+    
+    function call {name_of_the_function} parameters {name_of_the_parameters} end of parameters
+    
+and also between every parameter, the user has to say `next`. 
+ for example:
+
+    function call hello world parameters name end of parameters
+
+and the code which will be generated is:
+
+    hello_world(name)
