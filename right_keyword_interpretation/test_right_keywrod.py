@@ -42,6 +42,14 @@ class TestRightKeywordInterpretation(unittest.TestCase):
         self.assertEqual(keyword_recognition("end of Pension"),
                          ["end", "of", "function"])
 
+        self.assertEqual(keyword_recognition("return Valuable hello word"),
+                         ["return", "variable", "hello", "word"])
+
+        self.assertEqual(
+            keyword_recognition("function call hello world Pyramids Valuable name next integer 22 end of parameters"),
+            ["function", "call", "hello", "world", "parameters", "variable", "name", "next", "integer", "22", "end",
+             "of", "parameters"])
+
 
 if __name__ == '__main__':
     unittest.main()
