@@ -265,8 +265,8 @@ class VariableDeclaration:
         elif input_list[0] == 'subtract':
             from_keyword_index = self.find_keyword_from_index(input_list)
             variables = self.second_part(input_list, from_keyword_index)
-            first_variable = variables[0]
-            second_variable = variables[1]
+            first_variable = variables[1]
+            second_variable = variables[0]
             total_value = f'{first_variable} - {second_variable}'
         elif input_list[0] == 'multiply':
             by_keyword_index = self.find_keyword_by_index(input_list)
@@ -390,4 +390,3 @@ class VariableDeclaration:
         """
         code = f'{self.name} = {self.value}'
         return code
-
