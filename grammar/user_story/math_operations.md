@@ -14,6 +14,7 @@ When users want to declare a variable using math operations such as add, subtrac
 | divide| by  |
 
 **variable types**
+
     variable(for dynamic variables)
 
     string
