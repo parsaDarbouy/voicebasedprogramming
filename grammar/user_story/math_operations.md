@@ -15,33 +15,41 @@ When users want to declare a variable using math operations such as add, subtrac
 
 **variable types**
     variable(for dynamic variables)
+
     string
+    
     list
+    
     integer
+    
     float
 
 **Examples**
 
- - variable my  first var is operation add string my string to  string 4
-	we get this code:
+ - variable my  first var is operation add string my string to  string 
+
+ we get this code:
 	
 
 	    my_first_var = "my string" + "2"
 	 
 
  - variable my second var is operation multiply  float 2 point 3 by integer 4
+
  we get this code:
 	
 
 	    my_second_var = 2.3 * 2
 - variable my  third var is operation subtract variable x from  integer 4
+
 	we get this code:
 	
 
 	    my_third_var = 4 - x
 - variable my  fourth var is operation divide variable my var by variable y
+
 	we get this code:
 	
 
-	    my_forth_var =my_var / y
+	    my_forth_var = my_var / y
 	    
