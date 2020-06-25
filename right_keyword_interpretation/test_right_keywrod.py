@@ -50,6 +50,11 @@ class TestRightKeywordInterpretation(unittest.TestCase):
             ["function", "call", "hello", "world", "parameters", "variable", "name", "next", "integer", "22", "end",
              "of", "parameters"])
 
+        self.assertEqual(
+            keyword_recognition("Valuable my first var is operation add string my string to string 2"),
+            ["variable", "my", "first", "var", "is", "operation", "add", "string", "my", "string", "to",
+             "string", "2"])
+
 
 if __name__ == '__main__':
     unittest.main()

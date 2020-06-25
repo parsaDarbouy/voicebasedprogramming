@@ -4,7 +4,7 @@ soundex = fuzzy.Soundex(4)
 
 list = ['def', 'is', 'variable', 'string', 'integer', 'float', 'list', 'Dictionary', 'define', 'function', 'parameters',
         'end', 'of', 'parameters', 'next', 'if', 'condition', 'equal', 'less', 'greater', 'than', 'or ', 'return',
-        "call"]
+        "call", 'operation', 'add', 'subtract', 'multiply', 'divide', 'by', 'to', 'from']
 
 
 def soundex_generator(list):
