@@ -13,6 +13,13 @@ When users want to declare a variable using math operations such as add, subtrac
 | multiply | by  |
 | divide| by  |
 
+**variable types**
+    variable(for dynamic variables)
+    string
+    list
+    integer
+    float
+
 **Examples**
 
  - variable my  first var is operation add string my string to  string 4
