@@ -74,3 +74,5 @@ class FunctionDefinition:
         this_parameters = functools.reduce(lambda first, second: f'{first}, {second}', self.parameters)
         this_code = f'def {self.name}({this_parameters[:len(this_parameters)]}):'
         return this_code
+a = FunctionDefinition("define function hello world parameters end of parameters".split())
+print(a.code)
