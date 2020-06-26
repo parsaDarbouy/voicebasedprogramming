@@ -58,6 +58,9 @@ class FunctionDefinition:
                 this_parameters.append(self.convert_to_snake_case(this_parameter))
                 this_parameter = []
             elif self.end_of_parameters_check(this_index):
+                if this_parameter == []:
+                    this_parameters.append("")
+                    break
                 this_parameters.append(self.convert_to_snake_case(this_parameter))
                 break
             else:
@@ -74,5 +77,3 @@ class FunctionDefinition:
         this_parameters = functools.reduce(lambda first, second: f'{first}, {second}', self.parameters)
         this_code = f'def {self.name}({this_parameters[:len(this_parameters)]}):'
         return this_code
-a = FunctionDefinition("define function hello world parameters end of parameters".split())
-print(a.code)
