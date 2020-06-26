@@ -35,7 +35,7 @@ class CommandToCode:
             raise Exception("The Format Is Wrong")
         is_index, point_index = -1, -1
         for index, item in enumerate(self.command):
-            if item == 'is' and self.command[index + 1] in self.variable_types:
+            if item == 'is':
                 is_index = index
             if item == 'point':
                 point_index = index
@@ -54,21 +54,78 @@ class CommandToCode:
             if not self.command[-1].isdigit():
                 raise Exception("The Value Is Not Number")
         if self.command[is_index + 1] == 'operation':
+            if is_index + 2 > len(self.command) - 1:
+                raise Exception("Operation Type Not Defined")
             if self.command[is_index + 2] == 'add':
+                if is_index + 3 > len(self.command) - 1:
+                    raise Exception("wrong format")
+                if self.command[is_index + 3] not in ['integer', 'float', 'string', 'list', 'variable']:
+                    raise Exception("Variable Type is Unacceptable")
+
+                if self.command[is_index + 3] == 'integer':
+                    if not self.command[is_index + 4].isdigit():
+                        raise Exception("The Value Is Not Number")
+
                 if 'to' not in self.command[is_index + 2:]:
                     raise Exception("To keyword not found")
+                for index, item in enumerate(self.command):
+                    if item == 'to':
+                        to_index = index
+                if to_index + 1 > len(self.command) - 1:
+                    raise Exception("wrong format")
+                if self.command[to_index + 1] not in ['integer', 'float', 'string', 'list', 'variable']:
+                    raise Exception("Variable Type is Unacceptable")
+                if to_index + 2 > len(self.command) - 1:
+                    raise Exception("wrong format")
+                if self.command[to_index + 1] == 'integer':
+                    if not self.command[to_index + 2].isdigit():
+                        raise Exception("The Value Is Not Number")
+            elif self.command[is_index + 2] == 'subtract':
+                if is_index + 3 > len(self.command) - 1:
+                    raise Exception("wrong format")
                 if self.command[is_index + 3] not in ['integer', 'float', 'string', 'list', 'variable']:
                     raise Exception("Variable Type is Unacceptable")
-            elif self.command[is_index + 2] == 'subtract':
+                if self.command[is_index + 3] == 'integer':
+                    if not self.command[is_index + 4].isdigit():
+                        raise Exception("The Value Is Not Number")
+
                 if 'from' not in self.command[is_index + 2:]:
                     raise Exception("From keyword not found")
+                for index, item in enumerate(self.command):
+                    if item == 'from':
+                        from_index = index
+                if from_index + 1 > len(self.command) - 1:
+                    raise Exception("wrong format")
+                if self.command[from_index + 1] not in ['integer', 'float', 'string', 'list', 'variable']:
+                    raise Exception("Variable Type is Unacceptable")
+                if from_index + 2 > len(self.command) - 1:
+                    raise Exception("wrong format")
+                if self.command[from_index + 1] == 'integer':
+                    if not self.command[from_index + 2].isdigit():
+                        raise Exception("The Value Is Not Number")
+            elif self.command[is_index + 2] == 'multiply' or self.command[is_index + 2] == 'divide':
+                if is_index + 3 > len(self.command) - 1:
+                    raise Exception("wrong format")
                 if self.command[is_index + 3] not in ['integer', 'float', 'string', 'list', 'variable']:
                     raise Exception("Variable Type is Unacceptable")
-            elif self.command[is_index + 2] == 'multiply' or self.command[is_index + 2] == 'divide':
+                if self.command[is_index + 3] == 'integer':
+                    if not self.command[is_index + 4].isdigit():
+                        raise Exception("The Value Is Not Number")
+
                 if 'by' not in self.command[is_index + 2:]:
                     raise Exception("By keyword not found")
-                if self.command[is_index + 3] not in ['integer', 'float', 'string', 'list', 'variable']:
+                for index, item in enumerate(self.command):
+                    if item == 'by':
+                        by_index = index
+                if by_index + 1 > len(self.command) - 1:
+                    raise Exception("wrong format")
+                if self.command[by_index + 1] not in ['integer', 'float', 'string', 'list', 'variable']:
                     raise Exception("Variable Type is Unacceptable")
+                if by_index + 2 > len(self.command) - 1:
+                    raise Exception("wrong format")
+                if self.command[by_index + 1] == 'integer':
+                    if not self.command[by_index + 2].isdigit():
+                        raise Exception("The Value Is Not Number")
             else:
                 raise Exception("Operation Type Is Unacceptable")
 
@@ -128,3 +185,7 @@ class CommandToCode:
             return ''
         else:
             raise Exception("Invalid Format")
+
+a = CommandToCode()
+a.set_command("variable my name is operation multiply string a by integer 4".split())
+a.generate_code()
