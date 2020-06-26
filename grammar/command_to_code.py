@@ -11,7 +11,8 @@ class CommandToCode:
 
     def __init__(self):
         self.variable_types = ['integer', 'float', 'string', 'list', 'dictionary', 'variable', 'operation']
-        self.command = None
+        self.compare_types = ['equal to', 'not equal to', 'less than', 'greater than', 'less than or equal to',
+                              'greater than or ']
 
     def set_command(self, command: list):
         """
@@ -35,7 +36,7 @@ class CommandToCode:
             raise Exception("The Format Is Wrong")
         is_index, point_index = -1, -1
         for index, item in enumerate(self.command):
-            if item == 'is':
+            if item == 'is' and self.command[index + 1] in self.variable_types:
                 is_index = index
             if item == 'point':
                 point_index = index
@@ -159,6 +160,57 @@ class CommandToCode:
         if self.command[-1] != 'end':
             raise Exception("End of Parameters Not Found")
 
+    def if_condition_error_check(self):
+        if len(self.command) < 9:
+            raise Exception("The Format Is Wrong")
+        if self.command[2] not in ['variable', 'integer', 'float', 'string']:
+            raise Exception("Variable Type Is Wrong")
+        if self.command[2] == 'integer':
+            if not self.command[3].isdigit():
+                raise Exception("The Value Is Not Number")
+            if self.command[3] != 'is':
+                raise Exception("The Format Is Wrong")
+        if self.command[2] == 'float':
+            if not self.command[3].isdigit():
+                raise Exception("The Value Is Not Float")
+            if self.command[4] != 'point':
+                raise Exception("The Value Is Not Float")
+            if not self.command[5].isdigit():
+                raise Exception("The Value Is Not Float")
+            if self.command[6] != 'is':
+                raise Exception("The Format Is Wrong")
+        is_index = -1
+        for index, value in enumerate(self.command):
+            if value == 'is':
+                if self.command[index + 1: index + 3] in [compare_type.split() for compare_type in self.compare_types]\
+                        or self.command[index + 1: index + 4] in [compare_type.split() for compare_type in self.compare_types]:
+                    is_index = index
+        if is_index == -1:
+            raise Exception("Compare Type Is Wrong")
+        if " ".join(self.command[is_index + 1: is_index + 3]) in ['equal to', 'less than', 'greater than']:
+            second_var_index = is_index + 3
+        elif " ".join(self.command[is_index + 1: is_index + 4]) == 'not equal to':
+            second_var_index = is_index + 4
+        elif " ".join(self.command[is_index + 1: is_index + 6]) in ['less than or equal to', 'greater than or equal to']:
+            second_var_index = is_index + 6
+        if self.command[second_var_index] not in ['variable', 'integer', 'float', 'string']:
+            raise Exception("Variable Type Is Wrong")
+        if self.command[second_var_index] == 'integer':
+            if not self.command[second_var_index + 1].isdigit():
+                raise Exception("The Value Is Not Number")
+        if self.command[second_var_index] == 'float':
+            if not self.command[second_var_index + 1].isdigit():
+                raise Exception("The Value Is Not Float")
+            if self.command[second_var_index + 2] != 'point':
+                raise Exception("The Value Is Not Float")
+            if not self.command[second_var_index + 3].isdigit():
+                raise Exception("The Value Is Not Float")
+
+
+
+
+
+
     def generate_code(self) -> str:
         """
         This function, based on the command, generates the final code of the input command.
@@ -177,6 +229,7 @@ class CommandToCode:
             self.function_call_error_check()
             return FunctionCall(self.command).code
         elif self.command[0] == 'if' and self.command[1] == 'condition':
+            self.if_condition_error_check()
             return IfCondition(self.command).code
         elif self.command[0] == 'define' and self.command[1] == 'function':
             return FunctionDefinition(self.command).code
@@ -187,5 +240,5 @@ class CommandToCode:
             raise Exception("Invalid Format")
 
 a = CommandToCode()
-a.set_command("variable my name is operation multiply string a by integer 4".split())
+a.set_command("if condition integer 2 whats your name my name is equal to integer 2".split())
 a.generate_code()
