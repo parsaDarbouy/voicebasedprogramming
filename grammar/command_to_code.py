@@ -35,7 +35,7 @@ class CommandToCode:
             raise Exception("The Format Is Wrong")
         is_index, point_index = -1, -1
         for index, item in enumerate(self.command):
-            if item == 'is':
+            if item == 'is' and self.command[index + 1] in self.variable_types:
                 is_index = index
             if item == 'point':
                 point_index = index
@@ -53,6 +53,25 @@ class CommandToCode:
         if self.command[is_index + 1] == 'integer':
             if not self.command[-1].isdigit():
                 raise Exception("The Value Is Not Number")
+        if self.command[is_index + 1] == 'operation':
+            if self.command[is_index + 2] == 'add':
+                if 'to' not in self.command[is_index + 2:]:
+                    raise Exception("To keyword not found")
+                if self.command[is_index + 3] not in ['integer', 'float', 'string', 'list', 'variable']:
+                    raise Exception("Variable Type is Unacceptable")
+            elif self.command[is_index + 2] == 'subtract':
+                if 'from' not in self.command[is_index + 2:]:
+                    raise Exception("From keyword not found")
+                if self.command[is_index + 3] not in ['integer', 'float', 'string', 'list', 'variable']:
+                    raise Exception("Variable Type is Unacceptable")
+            elif self.command[is_index + 2] == 'multiply' or self.command[is_index + 2] == 'divide':
+                if 'by' not in self.command[is_index + 2:]:
+                    raise Exception("By keyword not found")
+                if self.command[is_index + 3] not in ['integer', 'float', 'string', 'list', 'variable']:
+                    raise Exception("Variable Type is Unacceptable")
+            else:
+                raise Exception("Operation Type Is Unacceptable")
+
 
     def return_error_check(self):
         """
