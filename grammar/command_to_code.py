@@ -206,8 +206,23 @@ class CommandToCode:
             if not self.command[second_var_index + 3].isdigit():
                 raise Exception("The Value Is Not Float")
 
-
-
+    def define_function_error_check(self):
+        if len(self.command) < 7:
+            raise Exception("The Format Is Wrong")
+        parametrs_index = -1
+        for index, value in enumerate(self.command[:-3]):
+            if value == 'parameters':
+                parametrs_index = index
+        if parametrs_index == -1:
+            raise Exception("Parameters keyword not found")
+        if self.command[parametrs_index + 1] == 'next':
+            raise Exception("The Format Is Wrong")
+        for index, value in enumerate(self.command[parametrs_index + 1:-3]):
+            if value == 'next':
+                if index == len(self.command[parametrs_index + 1:-3]) - 1:
+                    raise Exception("The Format Is Wrong")
+        if not self.command[-1] == 'parameters' and self.command[-2] == 'of' and self.command[-3] == 'end':
+            raise Exception("end of parameters not defined")
 
 
 
@@ -232,13 +247,10 @@ class CommandToCode:
             self.if_condition_error_check()
             return IfCondition(self.command).code
         elif self.command[0] == 'define' and self.command[1] == 'function':
+            self.define_function_error_check()
             return FunctionDefinition(self.command).code
         elif self.command[0] == 'end' and self.command[1] == 'of' and \
                 (self.command[2] == 'function' or self.command[2] == 'if'):
             return ''
         else:
             raise Exception("Invalid Format")
-
-a = CommandToCode()
-a.set_command("if condition integer 2 whats your name my name is equal to integer 2".split())
-a.generate_code()
