@@ -3,6 +3,7 @@ import speech_recognition
 from voice_recognition.exceptions import RecognizerException
 from tkinter import messagebox
 
+
 class GoogleRecognizer(object):
     def __init__(self, noise_adjust_duration=5):
         self.recognizer = speech_recognition.Recognizer()

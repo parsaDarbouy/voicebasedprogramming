@@ -17,7 +17,6 @@ class Root(Tk):
         self.revert_indent_phrases = ["end of if", "end of function"]
         self.title("Python Tkinter Dialog Widget")
         self.minsize(640, 400)
-        self.wm_iconbitmap('icon.ico')
         self.filename = None
 
         self.labelFrame = ttk.LabelFrame(self, text="Open File")
@@ -49,6 +48,7 @@ class Root(Tk):
             file = open(self.filename, "a")
             text = self.recognizer.recognize()
             words_list = keyword_recognition(text)
+            print(text)
             self.code_converter.set_command(words_list)
             if ' '.join(words_list[-3:]) in self.revert_indent_phrases and self.indent - 1 >= 0:
                 self.indent -= 1
