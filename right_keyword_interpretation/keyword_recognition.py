@@ -1,10 +1,12 @@
 from right_keyword_interpretation.right_keyword import right_keyword
 
-keyword_list = [('variable', 0.5, 'V614'), ('define', 0.5, 'D155'), ('if', 0.5, 'I133'), ('end', 0.5, 'E533')]
+keyword_list = [('variable', 0.5, 'V614'), ('define', 0.5, 'D155'), ('if', 0.5, 'I133'), ('end', 0.5, 'E533'),
+                ('return', 0.5, 'R365'), ('function', 0.5, 'F523')]
 
 variable_declaration = {('is', 0.6, 'I2')}
 variable_type = {('string', 0.6, 'S365'),
-                 ('integer', 0.6, 'I532'), ('float', 0.6, 'F432'), ('list', 0.6, 'L232'), ('Dictionary', 0.6, 'D235')}
+                 ('integer', 0.6, 'I532'), ('float', 0.6, 'F432'), ('list', 0.6, 'L232'), ('Dictionary', 0.6, 'D235'),
+                 ('operation', 0.5, 'O163')}
 
 define_function = [('function', 0.5, 'F523')]
 parameters = [('parameters', 0.7, 'P653')]
@@ -16,6 +18,13 @@ compare = [('equal', 0.5, 'E245'), ('less', 0.5, 'L245'), ('greater', 0.5, 'G636
 type_condition = [('string', 0.6, 'S365'), ('integer', 0.6, 'I532'), ('float', 0.6, 'F432'), ('variable', 0.5, 'V614')]
 
 end_of_function = [('of', 0.5, 'O133'), ('function', 0.5, 'F523')]
+
+operation_type = [('add', 0.5, 'A363'), ('subtract', 0.5, 'S136'), ('multiply', 0.5, 'M431'), ('divide', 0.5, 'D131')]
+
+math_var = [('string', 0.6, 'S365'), ('integer', 0.6, 'I532'), ('float', 0.6, 'F432'), ('variable', 0.5, 'V614'),
+            ('list', 0.6, 'L232')]
+
+operation_conjunction = [('by', 0.5, 'B131'), ('to', 0.5, 'T131'), ('from', 0.5, 'F651')]
 
 
 def keyword_recognition(string):
@@ -51,6 +60,19 @@ def keyword_recognition(string):
             elif word == 'end':
                 case_0 = 3
 
+            elif word == 'return':
+                case_0 = 4
+
+            elif word == "function":
+                answer = answer + [word]
+                index = index + 1
+                word = words_list[index]
+                word = right_keyword(word, [('call', 0.5, 'C465')])
+                if word == "call":
+                    case_0 = 5
+
+
+
 
         elif case_0 == 0:
             if case_1 == -1:
@@ -60,7 +82,10 @@ def keyword_recognition(string):
 
             elif case_1 == 0:
                 word = right_keyword(word, variable_type)
-                if word in ['string', 'integer', 'float', 'list', 'Dictionary']:
+                if word == "operation":
+                    case_0 = 6
+                    case_1 = -1
+                elif word in ['string', 'integer', 'float', 'list', 'Dictionary']:
                     case_1 = 1
 
         elif case_0 == 1:
@@ -135,7 +160,60 @@ def keyword_recognition(string):
                 word = words_list[index]
                 word = right_keyword(word, [end_of_function[1]])
 
+        elif case_0 == 4:
+            if case_1 == -1:
+                word = right_keyword(word, type_condition)
+                case_1 = 0
+
+        elif case_0 == 5:
+            if case_1 == -1:
+                word = right_keyword(word, parameters)
+                if word == 'parameters':
+                    case_1 = 0
+            elif case_1 == 0:
+                word = right_keyword(word, type_condition)
+                answer = answer + [word]
+                index = index + 1
+                word = words_list[index]
+                word = right_keyword(word, next_or_end_parameter)
+                if word == 'end':
+                    answer = answer + [word]
+                    index = index + 1
+                    word = words_list[index]
+                    word = right_keyword(word, end_of)
+                    if word != 'of':
+                        answer = answer + [word]
+                        pass
+                    else:  # 'of' has been founded, now 'parameters' has to be found
+                        answer = answer + [word]
+                        index = index + 1
+                        word = words_list[index]
+                        word = right_keyword(word, parameters)
+                        answer = answer + [word]
+                        break
+
+        elif case_0 == 6:
+            if case_1 == -1:
+                word = right_keyword(word, operation_type)
+                if word in ['add', 'subtract', 'multiply', 'divide']:
+                    case_1 = 0
+            elif case_1 == 0:
+                word = right_keyword(word, math_var)
+                if word in ['variable', 'string', 'integer', 'float', 'list']:
+                    case_1 = 1
+            elif case_1 == 1:
+                word = right_keyword(word, operation_conjunction)
+                if word in ['from', 'by', 'to']:
+                    case_1 = 2
+            elif case_1 == 2:
+                word = right_keyword(word, math_var)
+                if word in ['variable', 'string', 'integer', 'float', 'list']:
+                    case_1 = 3
+
         index = index + 1
         answer = answer + [word]
 
     return answer
+
+
+# print(keyword_recognition("function call hello world Pyramids Valuable name next integer 22 end of parameters"))
