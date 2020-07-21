@@ -1,4 +1,4 @@
-from voice_recognition.recognizers import GoogleRecognizer
+from voice_recognition.recognizers import GoogleRecognizer, SphinxRecognizer
 from right_keyword_interpretation.keyword_recognition import keyword_recognition
 from grammar.command_to_code import CommandToCode
 
