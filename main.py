@@ -168,6 +168,7 @@ class Root(Tk):
         self.filename = filedialog.askopenfilename(title="Please choose a file", parent=self)
         with open(self.filename, 'r') as file:
             self.Scrolledtext.configure(state=NORMAL)
+            self.Scrolledtext.delete('1.0', END)
             self.Scrolledtext.insert('end', file.read())
             self.Scrolledtext.configure(state=DISABLED)
 
