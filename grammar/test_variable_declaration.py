@@ -47,6 +47,23 @@ class TestVariableDeclaration(unittest.TestCase):
                                              'inner list end of list end of list end of list end  of dictionary'.split()).code,
                          'my_second_dict = {\'age\': 21, \'number\': [4.6, 5, [[\'inner list\']]]}')
 
+    def test_variable(self):
+        self.assertEqual(VariableDeclaration('variable my first var is variable my second var'.split()).code,
+                         'my_first_var = my_second_var')
+
+    def test_operation(self):
+        self.assertEqual(VariableDeclaration('variable my first var is operation add list string my string end of '
+                                             'list to list integer 4 end of list'.split()).code,
+                         'my_first_var = [\'my string\'] + [4]')
+        self.assertEqual(VariableDeclaration('variable my second var is operation subtract variable x from float 1 '
+                                             'point 7'.split()).code,
+                         'my_second_var = 1.7 - x')
+        self.assertEqual(VariableDeclaration('variable my third var is operation multiply integer 97 by float 87 '
+                                             'point 06'.split()).code,
+                         'my_third_var = 97 * 87.06')
+        self.assertEqual(VariableDeclaration('variable my forth var is operation divide variable a by variable b'.split()).code,
+                         'my_forth_var = a / b')
+
 
 if __name__ == '__main__':
     unittest.main()

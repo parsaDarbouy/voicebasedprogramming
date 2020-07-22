@@ -49,3 +49,4 @@ class ReturnFunction:
             return self.generate_dynamic_code()
         else:
             return self.generate_static_code()
+

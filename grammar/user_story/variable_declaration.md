@@ -14,7 +14,7 @@ and the code which will be generated is:
 
 ### Descriptions:
 the name of the variable will be generated in `snake_case` format, based on the PEP-8 convention.
-For the type of the variable, 5 options are available:
+For the type of the variable, 6 options are available:
 
 |Type of The Variable| Keyword    |
 |--------------------|------------|

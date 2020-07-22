@@ -55,6 +55,9 @@ class FunctionCall:
         """
         this_index = self.command.index('parameters') + 1
         this_parameters, this_parameter, variable_type = [], [], 0
+        if self.command[this_index] == "end" and self.command[this_index + 1] == "of" and self.command[
+            this_index + 2] == "parameters":
+            return this_parameters
         while True:
             if self.command[this_index] == 'next' or self.end_of_parameters_check(this_index):
                 if variable_type == 0:
@@ -84,6 +87,9 @@ class FunctionCall:
             Returns:
                 The exact code of the function definition command.
         """
-        this_parameters = functools.reduce(lambda first, second: f'{first}, {second}', self.parameters)
-        this_code = f'{self.name}({this_parameters[:len(this_parameters)]})'
+        if self.parameters !=[]:
+            this_parameters = functools.reduce(lambda first, second: f'{first}, {second}', self.parameters)
+            this_code = f'{self.name}({this_parameters[:len(this_parameters)]})'
+        else:
+            this_code = f'{self.name}()'
         return this_code
