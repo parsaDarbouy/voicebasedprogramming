@@ -8,6 +8,15 @@ soundex = Soundex()
 
 
 def right_keyword(word, keywords):
+    """
+    This function gets a word, and find out if engine has misinterpreted this word by checking possible list of keywords.
+     It uses pronunciation to compare the word with keywords.
+        Args:
+            word: a string that contains just one word.
+            keywords : list of possible keywords. this list has chosen according to grammar.
+        Returns:
+            right keyword.
+    """
     sound = soundex.soundex(word)
     for i in keywords:
         key_word = i[0]

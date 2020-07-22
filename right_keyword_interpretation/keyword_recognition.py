@@ -1,7 +1,7 @@
 from right_keyword_interpretation.right_keyword import right_keyword
 
 keyword_list = [('variable', 0.5, 'V614'), ('define', 0.5, 'D155'), ('if', 0.5, 'I133'), ('end', 0.5, 'E533'),
-                ('return', 0.5, 'R365'), ('function', 0.5, 'F523')]
+                ('return', 0.5, 'R365'), ('function', 0.5, 'F523'), ('remove', 0.5, 'R511')]
 
 variable_declaration = {('is', 0.6, 'I2')}
 variable_type = {('string', 0.6, 'S365'),
@@ -28,6 +28,13 @@ operation_conjunction = [('by', 0.5, 'B131'), ('to', 0.5, 'T131'), ('from', 0.5,
 
 
 def keyword_recognition(string):
+    """
+    This function gets a string, and find out if there is a keyword that engine misinterpreted  and make it right.
+        Args:
+            string: string of interpreted words by engine.
+        Returns:
+            a list of words that user said
+    """
     case_0 = -1
     case_1 = -1
     words_list = string.split(" ")
@@ -70,6 +77,15 @@ def keyword_recognition(string):
                 word = right_keyword(word, [('call', 0.5, 'C465')])
                 if word == "call":
                     case_0 = 5
+
+            elif word == 'remove':
+                answer = answer + [word]
+                index = index + 1
+                word = words_list[index]
+                word = right_keyword(word, [('line', 0.5, 'L511')])
+                if word == "line":
+                    case_0 = 7
+
 
 
 
@@ -215,5 +231,4 @@ def keyword_recognition(string):
 
     return answer
 
-
-# print(keyword_recognition("function call hello world Pyramids Valuable name next integer 22 end of parameters"))
+# print(keyword_recognition("remove line 22"))
