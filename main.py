@@ -1,3 +1,4 @@
+# import os
 import subprocess
 
 from voice_recognition.recognizers import GoogleRecognizer, SphinxRecognizer
@@ -120,7 +121,6 @@ class Root(Tk):
             font="-family {JetBrains Mono} -size 12 -weight normal -slant roman -underline 0 -overstrike 0")
         self.label1.configure(foreground="#ff8a65")
         self.label1.configure(text='''Do Not Speak...''')
-        self.recognizer.set_speak_notify_targets([self.label1])
 
         self.label2 = Label()
         self.label2.place(relx=0.461, rely=0.057, height=46, width=802)
@@ -136,26 +136,23 @@ class Root(Tk):
             text = self.recognizer.recognize()
             words_list = keyword_recognition(text)
             print(text)
-            if words_list[0].lower() == "remove" and words_list[1].lower() == "line":
-                line_number = int(words_list[2])
-                temp_file = open(self.filename, "r+")
-                lines = temp_file.readlines()
-                lines.pop(line_number - 1)
-                temp_file.truncate(0)
-                temp_file.writelines(lines)
-                temp_file.close()
-                self.Scrolledtext.configure(state=NORMAL)
-                self.Scrolledtext.delete('1.0', END)
-                self.Scrolledtext.insert('end', '\n'.join(lines))
-                self.Scrolledtext.configure(state=DISABLED)
+            words_list = list(map(lambda x: x.lower(), words_list))
+
+            if ' '.join(words_list[:2]) == "remove line":
+                self.remove_line(words_list[2])
+                return
+
+            if ' '.join(words_list[:3]) == "got to line":
+                # TODO go to line should be implemented
                 return
 
             self.code_converter.set_command(words_list)
             if ' '.join(words_list[-3:]) in self.revert_indent_phrases and self.indent - 1 >= 0:
                 self.indent -= 1
+                return
 
             with open(self.filename, "a") as file:
-                generated_code = (self.indent * '\t') + self.code_converter.generate_code() + "\n"
+                generated_code = (self.indent * 4 * ' ') + self.code_converter.generate_code() + "\n"
                 file.write(generated_code)
                 self.Scrolledtext.configure(state=NORMAL)
                 self.Scrolledtext.insert('end', generated_code)
@@ -174,10 +171,31 @@ class Root(Tk):
 
     def open_current_file(self):
         if self.filename:
+            # os.startfile(self.filename)
             subprocess.run(['open', self.filename], check=True)
 
     def end_program(self):
         self.destroy()
+
+    def remove_line(self, line_number):
+        try:
+            line_number = int(line_number)
+        except ValueError:
+            raise Exception("Invalid line number")
+
+        with open(self.filename, "r+") as file:
+            lines = file.readlines()
+            if line_number > len(lines) or line_number < 1:
+                raise Exception("Invalid line number")
+            lines.pop(line_number - 1)
+            file.seek(0)
+            file.truncate(0)
+            file.writelines(lines)
+
+        self.Scrolledtext.configure(state=NORMAL)
+        self.Scrolledtext.delete('1.0', END)
+        self.Scrolledtext.insert('end', ''.join(lines))
+        self.Scrolledtext.configure(state=DISABLED)
 
 
 root = Root()

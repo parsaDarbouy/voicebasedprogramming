@@ -1,6 +1,7 @@
 import speech_recognition
 
 from voice_recognition.exceptions import RecognizerException
+from tkinter import messagebox
 
 from word2number import w2n
 from word2number.w2n import american_number_system
@@ -11,14 +12,11 @@ class SphinxRecognizer(object):
         self.recognizer = speech_recognition.Recognizer()
         self.noise_adjust_duration = noise_adjust_duration
         self.current_result_text = ""
-        self.speak_notify_target = None
 
     def recognize(self, no_digits_allowed=False):
         with speech_recognition.Microphone() as source:
             self.recognizer.adjust_for_ambient_noise(source, duration=self.noise_adjust_duration)
-            if self.speak_notify_target:
-                self.speak_notify_target.configure(text='Speak Now...')
-                self.speak_notify_target.configure(foreground="#ff8a65")
+            messagebox.showinfo(message="Speak now")
             audio = self.recognizer.listen(source)
         try:
             self.current_result_text = self.recognizer.recognize_sphinx(audio)
@@ -61,25 +59,17 @@ class SphinxRecognizer(object):
             if element not in american_number_system:
                 raise ValueError
 
-    def set_speak_notify_target(self, speak_notify_target):
-        self.speak_notify_target = speak_notify_target
-
 
 class GoogleRecognizer(object):
     def __init__(self, noise_adjust_duration=5):
         self.recognizer = speech_recognition.Recognizer()
         self.noise_adjust_duration = noise_adjust_duration
         self.current_result_text = ""
-        self.speak_notify_targets = None
 
     def recognize(self):
         with speech_recognition.Microphone() as source:
             self.recognizer.adjust_for_ambient_noise(source, duration=self.noise_adjust_duration)
-            if self.speak_notify_targets:
-                print("good")
-                self.speak_notify_targets[0].configure(text='Speak Now...')
-                self.speak_notify_targets[0].configure(foreground="#ff8a65")
-            print("speak")
+            messagebox.showinfo(message="Speak now")
             audio = self.recognizer.listen(source)
         try:
             self.current_result_text = self.recognizer.recognize_google(audio)
@@ -88,6 +78,3 @@ class GoogleRecognizer(object):
         except speech_recognition.RequestError:
             raise RecognizerException("Seems like we cannot connect to google at this time! Try again later")
         return self.current_result_text
-
-    def set_speak_notify_targets(self, speak_notify_target):
-        self.speak_notify_targets = speak_notify_target
