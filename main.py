@@ -158,6 +158,7 @@ class Root(Tk):
             self.code_converter.set_command(words_list)
             if ' '.join(words_list[-3:]) in self.revert_indent_phrases and self.indent - 1 >= 0:
                 self.indent -= 1
+                self.label1.configure(text='No Error')
                 return
 
             with open(self.filename, "a") as file:
@@ -173,7 +174,10 @@ class Root(Tk):
 
             if ' '.join(words_list[:2]) in self.indent_phrases:
                 self.indent += 1
-        self.label1.configure(text='No Error')
+        if self.filename == '':
+            self.label1.configure(text='Select a File')
+        elif generated_code != '':
+            self.label1.configure(text='No Error')
         return
 
     def select_new_file(self):
