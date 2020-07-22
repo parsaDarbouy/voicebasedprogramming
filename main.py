@@ -1,5 +1,5 @@
-# import os
-import subprocess
+import os
+# import subprocess
 
 from voice_recognition.recognizers import GoogleRecognizer, SphinxRecognizer
 from right_keyword_interpretation.keyword_recognition import keyword_recognition
@@ -9,6 +9,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import scrolledtext
+from word2number import w2n
 
 
 class Root(Tk):
@@ -120,7 +121,7 @@ class Root(Tk):
         self.label1.configure(
             font="-family {JetBrains Mono} -size 12 -weight normal -slant roman -underline 0 -overstrike 0")
         self.label1.configure(foreground="#ff8a65")
-        self.label1.configure(text='''Do Not Speak...''')
+        self.label1.configure(text='''See Status Here''')
 
         self.label2 = Label()
         self.label2.place(relx=0.461, rely=0.057, height=46, width=802)
@@ -132,14 +133,22 @@ class Root(Tk):
         self.label2.configure(text='''See Your Code Here''')
 
     def listen_and_generate_code(self):
+        self.label1.configure(text='Wait...')
         if self.filename:
-            text = self.recognizer.recognize()
-            words_list = keyword_recognition(text)
+            try:
+                text = self.recognizer.recognize()
+                words_list = keyword_recognition(text)
+            except Exception as error:
+                self.label1.configure(text=str(error))
+                return
             print(text)
             words_list = list(map(lambda x: x.lower(), words_list))
 
             if ' '.join(words_list[:2]) == "remove line":
-                self.remove_line(words_list[2])
+                try:
+                    self.remove_line(words_list[2])
+                except Exception as error:
+                    self.label1.configure(text=str(error))
                 return
 
             if ' '.join(words_list[:3]) == "got to line":
@@ -152,7 +161,11 @@ class Root(Tk):
                 return
 
             with open(self.filename, "a") as file:
-                generated_code = (self.indent * 4 * ' ') + self.code_converter.generate_code() + "\n"
+                try:
+                    generated_code = (self.indent * 4 * ' ') + self.code_converter.generate_code() + "\n"
+                except Exception as error:
+                    self.label1.configure(text=str(error))
+                    return
                 file.write(generated_code)
                 self.Scrolledtext.configure(state=NORMAL)
                 self.Scrolledtext.insert('end', generated_code)
@@ -160,6 +173,8 @@ class Root(Tk):
 
             if ' '.join(words_list[:2]) in self.indent_phrases:
                 self.indent += 1
+        self.label1.configure(text='No Error')
+        return
 
     def select_new_file(self):
         self.filename = filedialog.askopenfilename(title="Please choose a file", parent=self)
@@ -171,15 +186,18 @@ class Root(Tk):
 
     def open_current_file(self):
         if self.filename:
-            # os.startfile(self.filename)
-            subprocess.run(['open', self.filename], check=True)
+            os.startfile(self.filename)
+            # subprocess.run(['open', self.filename], check=True)
 
     def end_program(self):
         self.destroy()
 
     def remove_line(self, line_number):
         try:
-            line_number = int(line_number)
+            if type(line_number) == int:
+                line_number = int(line_number)
+            else:
+                line_number = w2n.word_to_num(line_number)
         except ValueError:
             raise Exception("Invalid line number")
 
