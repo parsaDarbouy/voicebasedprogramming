@@ -1,5 +1,5 @@
-import os
-# import subprocess
+# import os
+import subprocess
 
 from voice_recognition.recognizers import GoogleRecognizer, SphinxRecognizer
 from right_keyword_interpretation.keyword_recognition import keyword_recognition
@@ -17,9 +17,11 @@ class Root(Tk):
         super(Root, self).__init__()
 
         self.filename = ""
+        self.file_line_pointer = None
         self.recognizer = GoogleRecognizer()
         self.code_converter = CommandToCode()
-        self.indent = 0
+        self.current_indent = 0
+        self.last_indent = 0
         self.indent_phrases = ["if condition", "define function"]
         self.revert_indent_phrases = ["end of if", "end of function"]
 
@@ -147,51 +149,66 @@ class Root(Tk):
             if ' '.join(words_list[:2]) == "remove line":
                 try:
                     self.remove_line(words_list[2])
+                    self.label1.configure(text='No Error')
                 except Exception as error:
                     self.label1.configure(text=str(error))
                 return
 
-            if ' '.join(words_list[:3]) == "got to line":
-                # TODO go to line should be implemented
+            if ' '.join(words_list[:3]) == "go to line":
+                try:
+                    self.got_to_line(words_list[3])
+                    self.label1.configure(text='No Error')
+                except Exception as error:
+                    self.label1.configure(text=str(error))
                 return
 
             self.code_converter.set_command(words_list)
-            if ' '.join(words_list[-3:]) in self.revert_indent_phrases and self.indent - 1 >= 0:
-                self.indent -= 1
+            if ' '.join(words_list[-3:]) in self.revert_indent_phrases and self.current_indent - 1 >= 0:
+                self.current_indent -= 1
                 self.label1.configure(text='No Error')
                 return
 
-            with open(self.filename, "a") as file:
-                try:
-                    generated_code = (self.indent * 4 * ' ') + self.code_converter.generate_code() + "\n"
-                except Exception as error:
-                    self.label1.configure(text=str(error))
-                    return
-                file.write(generated_code)
-                self.Scrolledtext.configure(state=NORMAL)
-                self.Scrolledtext.insert('end', generated_code)
-                self.Scrolledtext.configure(state=DISABLED)
+            try:
+                generated_code = (self.current_indent * 4 * ' ') + self.code_converter.generate_code() + "\n"
+            except Exception as error:
+                self.label1.configure(text=str(error))
+                return
+
+            self.write_code_to_file(generated_code)
 
             if ' '.join(words_list[:2]) in self.indent_phrases:
-                self.indent += 1
-        if self.filename == '':
-            self.label1.configure(text='Select a File')
-        elif generated_code != '':
+                self.current_indent += 1
+
             self.label1.configure(text='No Error')
-        return
+
+        else:
+            self.label1.configure(text='Please Select a File First')
 
     def select_new_file(self):
-        self.filename = filedialog.askopenfilename(title="Please choose a file", parent=self)
+        self.filename = filedialog.askopenfilename(title="Please Choose a File", parent=self)
         with open(self.filename, 'r') as file:
+            file_data = file.read()
             self.Scrolledtext.configure(state=NORMAL)
             self.Scrolledtext.delete('1.0', END)
-            self.Scrolledtext.insert('end', file.read())
+            self.Scrolledtext.insert('end', file_data)
             self.Scrolledtext.configure(state=DISABLED)
+            index = -2
+            flag = True
+            while flag:
+                if file_data[index] == '\n':
+                    flag = False
+                else:
+                    index -= 1
+            self.last_indent = file_data[index + 1: -1].count('    ')
+            self.current_indent = self.last_indent
+            self.file_line_pointer = None
 
     def open_current_file(self):
         if self.filename:
-            os.startfile(self.filename)
-            # subprocess.run(['open', self.filename], check=True)
+            # os.startfile(self.filename)
+            subprocess.run(['open', self.filename], check=True)
+        else:
+            self.label1.configure(text='Please Select a File First')
 
     def end_program(self):
         self.destroy()
@@ -203,12 +220,13 @@ class Root(Tk):
             else:
                 line_number = w2n.word_to_num(line_number)
         except ValueError:
-            raise Exception("Invalid line number")
+            raise Exception("Invalid Line Number")
 
         with open(self.filename, "r+") as file:
             lines = file.readlines()
             if line_number > len(lines) or line_number < 1:
-                raise Exception("Invalid line number")
+                raise Exception("Invalid Line Number")
+
             lines.pop(line_number - 1)
             file.seek(0)
             file.truncate(0)
@@ -218,6 +236,61 @@ class Root(Tk):
         self.Scrolledtext.delete('1.0', END)
         self.Scrolledtext.insert('end', ''.join(lines))
         self.Scrolledtext.configure(state=DISABLED)
+
+    def got_to_line(self, line_number):
+        print("slm")
+        if self.file_line_pointer is None:
+            self.last_indent = self.current_indent
+            print("slm2")
+
+        if line_number == "end":
+            self.file_line_pointer = None
+            self.current_indent = self.last_indent
+            return
+
+        if line_number == "start":
+            self.file_line_pointer = 1
+            self.current_indent = 0
+            return
+
+        try:
+            if type(line_number) == int:
+                line_number = int(line_number)
+            else:
+                line_number = w2n.word_to_num(line_number)
+        except ValueError:
+            raise Exception("Invalid Line Number")
+
+        with open(self.filename, "r") as file:
+            print("slm10")
+            lines = file.readlines()
+            if line_number > len(lines) or line_number < 1:
+                raise Exception("Invalid Line Number")
+            target_line = lines[line_number - 1]
+            self.current_indent = target_line.count('    ')
+            self.file_line_pointer = line_number
+            print(self.current_indent)
+            print(self.file_line_pointer)
+
+    def write_code_to_file(self, generated_code):
+        if self.file_line_pointer:
+            print("slm3")
+            with open(self.filename, 'r+') as file:
+                lines = file.readlines()
+                lines.insert(self.file_line_pointer - 1, generated_code)
+                file.seek(0)
+                file.writelines(lines)
+                print(lines)
+                self.Scrolledtext.configure(state=NORMAL)
+                self.Scrolledtext.delete('1.0', END)
+                self.Scrolledtext.insert('end', ''.join(lines))
+                self.Scrolledtext.configure(state=DISABLED)
+        else:
+            with open(self.filename, "a") as file:
+                file.write(generated_code)
+                self.Scrolledtext.configure(state=NORMAL)
+                self.Scrolledtext.insert('end', generated_code)
+                self.Scrolledtext.configure(state=DISABLED)
 
 
 root = Root()
