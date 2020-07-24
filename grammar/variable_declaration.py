@@ -390,3 +390,4 @@ class VariableDeclaration:
         """
         code = f'{self.name} = {self.value}'
         return code
+

@@ -1,8 +1,11 @@
 # If Condition
 ### Overall Format:
-In order to define any IF condition in python, user has to say the following format:
+In order to define ELSE condition in python, user has to say :
+    `else condition`
+    
+In order to define any IF/ELIF condition in python, user has to say the following format:
 
-    if condition {type_of_the_variable} {name_of_the_variable} is {type_of_the_compare} {type_of_the_variable} {name_of_the_variable}
+    if/else if condition {type_of_the_variable} {name_of_the_variable} is {type_of_the_compare} {type_of_the_variable} {name_of_the_variable}
     
 `{type_of_the_variable}` can be:
 - `variable` for dynamic variables.

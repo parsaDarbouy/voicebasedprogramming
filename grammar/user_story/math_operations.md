@@ -27,7 +27,7 @@ When users want to declare a variable using math operations such as add, subtrac
 
 **Examples**
 
- - variable my  first var is operation add string my string to  string 
+ - variable my  first var is operation add string my string to integer 2 
 
  we get this code:
 	

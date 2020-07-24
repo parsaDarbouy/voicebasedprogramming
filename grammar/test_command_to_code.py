@@ -1,9 +1,44 @@
 import unittest
 
+from function_call import FunctionCall
 from variable_declaration import VariableDeclaration
+from return_function import ReturnFunction
+from if_condition import IfCondition
+from function_definition import FunctionDefinition
 
+class TestCommandToCode(unittest.TestCase):
 
-class TestVariableDeclaration(unittest.TestCase):
+    def test_return_function(self):
+        self.assertEqual(
+            FunctionDefinition('define function first func parameters end of parameters'.split()).code,
+            'def first_func():')
+        self.assertEqual(
+            FunctionDefinition(
+                'define function second func parameters name next age end of parameters'.split()).code,
+            'def second_func(name, age):')
+
+    def test_if_condition(self):
+        self.assertEqual(
+            IfCondition('if condition variable my first var is equal to string rahil'.split()).code,
+            'if my_first_var == \'rahil\':')
+        self.assertEqual(
+            IfCondition('if condition integer 2 is not equal to variable my first number'.split()).code,
+            'if 2 != my_first_number:')
+        self.assertEqual(
+            IfCondition(
+                'if condition variable my second var is greater than or equal to variable my second number'.split()).code,
+            'if my_second_var >= my_second_number:')
+        self.assertEqual(
+            IfCondition('if condition float 5 point 98 is less than variable my third number'.split()).code,
+            'if 5.98 < my_third_number:')
+
+    def test_return_function(self):
+        self.assertEqual(
+            FunctionCall('function call first func parameters end of parameters'.split()).code,
+            'first_func()')
+        self.assertEqual(
+            FunctionCall('function call second func parameters name next age end of parameters'.split()).code,
+            'second_func(name, age)')
 
     def test_integer(self):
         self.assertEqual(VariableDeclaration('variable my integer is number is integer 22'.split()).code,
@@ -64,7 +99,13 @@ class TestVariableDeclaration(unittest.TestCase):
         self.assertEqual(VariableDeclaration('variable my forth var is operation divide variable a by variable b'.split()).code,
                          'my_forth_var = a / b')
 
+    def test_return_function(self):
+        self.assertEqual(
+            ReturnFunction('return variable result'.split()).code,
+            'return result')
+        self.assertEqual(
+            ReturnFunction('return string result is returned'.split()).code,
+            'return \'result is returned\'')
 
 if __name__ == '__main__':
     unittest.main()
-
