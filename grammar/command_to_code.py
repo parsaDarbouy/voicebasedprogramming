@@ -5,7 +5,7 @@ from grammar.function_definition import FunctionDefinition
 from grammar.variable_declaration import VariableDeclaration
 from grammar.return_function import ReturnFunction
 from grammar.function_call import FunctionCall
-
+from grammar.else_condition import ElseCondition
 
 class CommandToCode:
 
@@ -52,7 +52,7 @@ class CommandToCode:
             if not self.command[point_index + 1].isdigit():
                 raise Exception("The Value Is Not Float")
         if self.command[is_index + 1] == 'integer':
-            if not self.command[-1].isdigit():
+            if not self.command[is_index + 2].isdigit():
                 raise Exception("The Value Is Not Number")
         if self.command[is_index + 1] == 'operation':
             if is_index + 2 > len(self.command) - 1:
@@ -161,6 +161,8 @@ class CommandToCode:
             raise Exception("End of Parameters Not Found")
 
     def if_condition_error_check(self):
+        if self.command[0] == 'else':
+            self.command = self.command[1:]
         if len(self.command) < 9:
             raise Exception("The Format Is Wrong")
         if self.command[2] not in ['variable', 'integer', 'float', 'string']:
@@ -206,6 +208,10 @@ class CommandToCode:
             if not self.command[second_var_index + 3].isdigit():
                 raise Exception("The Value Is Not Float")
 
+    def else_condition_error_check(self):
+        if len(self.command) != 2:
+            raise Exception("The Format Is Wrong")
+
     def define_function_error_check(self):
         if len(self.command) < 7:
             raise Exception("The Format Is Wrong")
@@ -246,11 +252,18 @@ class CommandToCode:
         elif self.command[0] == 'if' and self.command[1] == 'condition':
             self.if_condition_error_check()
             return IfCondition(self.command).code
+        elif self.command[0] == 'else' and self.command[1] == 'if' and self.command[2] == 'condition':
+            self.if_condition_error_check()
+            self.command.insert(0, 'else')
+            return IfCondition(self.command).code
+        elif self.command[0] == 'else' and self.command[1] == 'condition':
+            self.else_condition_error_check()
+            return ElseCondition(self.command).code
         elif self.command[0] == 'define' and self.command[1] == 'function':
             self.define_function_error_check()
             return FunctionDefinition(self.command).code
         elif self.command[0] == 'end' and self.command[1] == 'of' and \
-                (self.command[2] == 'function' or self.command[2] == 'if'):
+                (self.command[2] == 'function' or self.command[2] == 'if' or self.command[2] == 'else'):
             return ''
         else:
             raise Exception("Invalid Format")
