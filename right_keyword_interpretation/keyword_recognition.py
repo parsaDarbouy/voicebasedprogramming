@@ -215,6 +215,8 @@ def keyword_recognition(string):
         elif case_0 == 6:
             if case_1 == -1:
                 word = right_keyword(word, operation_type)
+                if word == "at":
+                    word = 'add'
                 if word in ['add', 'subtract', 'multiply', 'divide']:
                     case_1 = 0
             elif case_1 == 0:
@@ -235,4 +237,4 @@ def keyword_recognition(string):
 
     return answer
 
-# print(keyword_recognition("varible x is operation subtract integer 10 from integer 10"))
+# print(keyword_recognition("varible x is operation at integer 10 from integer 10"))
