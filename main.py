@@ -1,5 +1,5 @@
-# import os
-import subprocess
+import os
+# import subprocess
 
 from voice_recognition.recognizers import GoogleRecognizer, SphinxRecognizer
 from right_keyword_interpretation.keyword_recognition import keyword_recognition
@@ -162,8 +162,7 @@ class Root(Tk):
                 return
 
             self.code_converter.set_command(words_list)
-            if (' '.join(words_list[:2]) in self.revert_indent_phrases or ' '.join(
-                    words_list[:3]) in self.revert_indent_phrases) and self.current_indent - 1 >= 0:
+            if ' '.join(words_list) in self.revert_indent_phrases and self.current_indent - 1 >= 0:
                 self.current_indent -= 1
                 self.label1.configure(text='No Error')
                 return
@@ -210,8 +209,8 @@ class Root(Tk):
 
     def open_current_file(self):
         if self.filename:
-            # os.startfile(self.filename)
-            subprocess.run(['open', self.filename], check=True)
+            os.startfile(self.filename)
+            # subprocess.run(['open', self.filename], check=True)
         else:
             self.label1.configure(text='Please Select a File First')
 
