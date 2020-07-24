@@ -55,6 +55,10 @@ class TestRightKeywordInterpretation(unittest.TestCase):
             ["variable", "my", "first", "var", "is", "operation", "add", "string", "my", "string", "to",
              "string", "2"])
 
+        self.assertEqual(
+            keyword_recognition("remove Lean 33"),
+            ["remove", "line", "33"])
+
 
 if __name__ == '__main__':
     unittest.main()
