@@ -19,7 +19,7 @@ type_condition = [('string', 0.6, 'S365'), ('integer', 0.6, 'I532'), ('float', 0
 
 end_of_function = [('of', 0.5, 'O133'), ('function', 0.5, 'F523')]
 
-operation_type = [('add', 0.5, 'A363'), ('subtract', 0.5, 'S136'), ('multiply', 0.5, 'M431'), ('divide', 0.5, 'D131')]
+operation_type = [('add', 0.7, 'A363'), ('subtract', 0.7, 'S136'), ('multiply', 0.7, 'M431'), ('divide', 0.7, 'D131')]
 
 math_var = [('string', 0.6, 'S365'), ('integer', 0.6, 'I532'), ('float', 0.6, 'F432'), ('variable', 0.5, 'V614'),
             ('list', 0.6, 'L232')]
@@ -235,4 +235,4 @@ def keyword_recognition(string):
 
     return answer
 
-# print(keyword_recognition("remove line 22"))
+# print(keyword_recognition("varible x is operation subtract integer 10 from integer 10"))
