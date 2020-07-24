@@ -191,16 +191,21 @@ class Root(Tk):
             self.Scrolledtext.delete('1.0', END)
             self.Scrolledtext.insert('end', file_data)
             self.Scrolledtext.configure(state=DISABLED)
-            index = -2
-            flag = True
-            while flag:
-                if file_data[index] == '\n':
-                    flag = False
-                else:
-                    index -= 1
-            self.last_indent = file_data[index + 1: -1].count('    ')
-            self.current_indent = self.last_indent
-            self.file_line_pointer = None
+            if file_data == '':
+                self.last_indent = 0
+                self.current_indent = self.last_indent
+                self.file_line_pointer = None
+            else:
+                index = -2
+                flag = True
+                while flag:
+                    if file_data[index] == '\n':
+                        flag = False
+                    else:
+                        index -= 1
+                self.last_indent = file_data[index + 1: -1].count('    ')
+                self.current_indent = self.last_indent
+                self.file_line_pointer = None
 
     def open_current_file(self):
         if self.filename:
