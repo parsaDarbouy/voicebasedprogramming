@@ -9,7 +9,12 @@ class IfCondition:
         self.variable_types = ['integer', 'float', 'string']   # dictionary and list need to be added
         self.compare_types = ['equal to', 'not equal to', 'less than', 'greater than', 'less than or equal to',
                               'greater than or ', 'equal to']
-        self.command = command[2:]
+        if command[0] == 'else':
+            self.command = command[3:]
+            self.else_if = 1
+        else:
+            self.command = command[2:]
+            self.else_if = 0
         self.is_keyword_index = self.find_is_keyword_index()
         self.first_part = self.dynamicOrNot(self.command, 'first_part')
         self.compare_type = self.find_compare_type()
@@ -152,8 +157,10 @@ class IfCondition:
             Returns:
                 The exact code of the function definition command.
         """
-        code = f'if {self.first_part} {self.compare_type} {self.second_part}:'
+        if self.else_if == 0:
+            code = f'if {self.first_part} {self.compare_type} {self.second_part}:'
+        else:
+            code = f'elif {self.first_part} {self.compare_type} {self.second_part}:'
         return code
-
 
 
