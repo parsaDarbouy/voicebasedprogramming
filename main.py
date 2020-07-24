@@ -22,8 +22,8 @@ class Root(Tk):
         self.code_converter = CommandToCode()
         self.current_indent = 0
         self.last_indent = 0
-        self.indent_phrases = ["if condition", "define function"]
-        self.revert_indent_phrases = ["end of if", "end of function"]
+        self.indent_phrases = ["if condition", "define function", "else if condition"]
+        self.revert_indent_phrases = ["end of if", "end of function", "end of else if"]
 
         self.geometry("1920x1051+650+150")
         self.title("Voice-Based Programming")
@@ -162,7 +162,8 @@ class Root(Tk):
                 return
 
             self.code_converter.set_command(words_list)
-            if ' '.join(words_list[-3:]) in self.revert_indent_phrases and self.current_indent - 1 >= 0:
+            if (' '.join(words_list[:2]) in self.revert_indent_phrases or ' '.join(
+                    words_list[:3]) in self.revert_indent_phrases) and self.current_indent - 1 >= 0:
                 self.current_indent -= 1
                 self.label1.configure(text='No Error')
                 return
@@ -175,7 +176,7 @@ class Root(Tk):
 
             self.write_code_to_file(generated_code)
 
-            if ' '.join(words_list[:2]) in self.indent_phrases:
+            if ' '.join(words_list[:2]) in self.indent_phrases or ' '.join(words_list[:3]) in self.indent_phrases:
                 self.current_indent += 1
 
             self.label1.configure(text='No Error')

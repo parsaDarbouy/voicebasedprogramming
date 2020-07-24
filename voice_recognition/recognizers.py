@@ -17,7 +17,7 @@ class SphinxRecognizer(object):
         with speech_recognition.Microphone() as source:
             self.recognizer.adjust_for_ambient_noise(source, duration=self.noise_adjust_duration)
             messagebox.showinfo(message="Speak now")
-            audio = self.recognizer.listen(source)
+            audio = self.recognizer.listen(source, phrase_time_limit=10)
         try:
             self.current_result_text = self.recognizer.recognize_sphinx(audio)
         except speech_recognition.UnknownValueError:
@@ -70,7 +70,7 @@ class GoogleRecognizer(object):
         with speech_recognition.Microphone() as source:
             self.recognizer.adjust_for_ambient_noise(source, duration=self.noise_adjust_duration)
             messagebox.showinfo(message="Speak now")
-            audio = self.recognizer.listen(source)
+            audio = self.recognizer.listen(source, phrase_time_limit=10)
         try:
             self.current_result_text = self.recognizer.recognize_google(audio)
         except speech_recognition.UnknownValueError:
