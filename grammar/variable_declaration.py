@@ -33,7 +33,7 @@ class VariableDeclaration:
         """
         This function finds the variable which will be declared.
             Returns:
-                The type of variable of the variable declarationcommand.
+                The type of variable of the variable declaration command.
         """
         variable_type = self.command[self.find_is_keyword_index() + 1]
         return variable_type
@@ -136,8 +136,7 @@ class VariableDeclaration:
             if this_type == 'integer':
                 this_list.append(int(item))
             elif this_type == 'float':
-                this_list.append(float(f'{item}.{input_list[index + 2]}'))
-                index += 2
+                this_list.append(float(f'{item}'))
             elif this_type == 'string':
                 end_of_string = self.find_last_index_of_string(input_list[index:]) + index
                 this_string = self.parse_string(input_list[index:end_of_string])
@@ -151,12 +150,12 @@ class VariableDeclaration:
 
     def parse_dictionary(self, input_list: list) -> dict:
         """
-                This function gets the command which is declaring dictionary, and declare the variables inside the dictionary.
-                    Args:
-                        input_list: The list of words which contains the dictionary declaration.
-                    Returns:
-                        The dictionary which has been declared with the input command.
-                """
+        This function gets the command which is declaring dictionary, and declare the variables inside the dictionary.
+            Args:
+                input_list: The list of words which contains the dictionary declaration.
+            Returns:
+                The dictionary which has been declared with the input command.
+        """
         this_type, this_dict = None, {}
         index, item = -1, None
         key_is_set = False
@@ -192,14 +191,12 @@ class VariableDeclaration:
                     key_is_set = True
             elif this_type == 'float':
                 if key_is_set:
-                    key_value = float(f'{item}.{input_list[index + 2]}')
+                    key_value = float(f'{item}')
                     this_dict[key] = key_value
                     key_is_set = False
-                    index += 2
                 else:
-                    key = float(f'{item}.{input_list[index + 2]}')
+                    key = float(f'{item}')
                     key_is_set = True
-                    index += 2
             elif this_type == 'list':
                 if key_is_set:
                     key_value = self.parse_list(input_list[index:])
@@ -215,12 +212,12 @@ class VariableDeclaration:
 
     def variable_name(self, input_list: list) -> str:
         """
-                This function finds name of the second variable declared.
-                    Args:
-                        input_list: The list of words which contains the variable name.
-                    Returns:
-                        The name of the second variable in snake case.
-                """
+        This function finds name of the second variable declared.
+            Args:
+                input_list: The list of words which contains the variable name.
+            Returns:
+                The name of the second variable in snake case.
+        """
         return self.convert_to_snake_case(input_list)
 
     def find_value(self) -> str:
@@ -234,7 +231,7 @@ class VariableDeclaration:
         if self.type == 'integer':
             value = self.command[is_keyword_index + 2]
         elif self.type == 'float':
-            value = f'{self.command[is_keyword_index + 2]}.{self.command[is_keyword_index + 4]}'
+            value = f'{self.command[is_keyword_index + 2]}'
         elif self.type == 'string':
             value = self.parse_string(self.command[is_keyword_index + 2:])
         elif self.type == 'list':
@@ -249,12 +246,12 @@ class VariableDeclaration:
 
     def find_operation(self, input_list: list) -> str:
         """
-                This function finds value of right side of the operation.
-                    Args:
-                        input_list: list of words which contain the whole operation.
-                    Returns:
-                        A string which shows right side of the operation.
-                """
+        This function finds value of right side of the operation.
+            Args:
+                input_list: list of words which contain the whole operation.
+            Returns:
+                A string which shows right side of the operation.
+        """
         total_value = None
         if input_list[0] == 'add':
             to_keyword_index = self.find_keyword_to_index(input_list)
@@ -284,13 +281,13 @@ class VariableDeclaration:
 
     def second_part(self, input_list: list, keyword_index: int) -> tuple:
         """
-                This function finds both variable values declared in right side of the operation.
-                    Args:
-                        input_list: list of words which contain the whole operation.
-                        keyword_index: type of the variable declared.
-                    Returns:
-                        The value of the both variables on the right side of the operation.
-                """
+        This function finds both variable values declared in right side of the operation.
+            Args:
+                input_list: list of words which contain the whole operation.
+                keyword_index: type of the variable declared.
+            Returns:
+                The value of the both variables on the right side of the operation.
+        """
         first_type = input_list[1]
         first_variable = self.second_part_values(first_type, input_list[1: keyword_index])
         second_type = input_list[keyword_index + 1]
@@ -299,17 +296,17 @@ class VariableDeclaration:
 
     def second_part_values(self, variable_type: str, input_list: list) -> str:
         """
-                This function finds value of each variable in right side of the operation.
-                    Args:
-                        input_list: list of words which contain the variable type and name/value.
-                        variable_type: type of the variable declared.
-                    Returns:
-                        The value of the variable.
-                """
+        This function finds value of each variable in right side of the operation.
+            Args:
+                input_list: list of words which contain the variable type and name/value.
+                variable_type: type of the variable declared.
+            Returns:
+                The value of the variable.
+        """
         if variable_type == 'integer':
             value = input_list[1]
         elif variable_type == 'float':
-            value = f'{input_list[1]}.{input_list[3]}'
+            value = f'{input_list[1]}'
         elif variable_type == 'string':
             value = self.parse_string(input_list[1:])
         elif variable_type == 'list':
@@ -320,12 +317,12 @@ class VariableDeclaration:
 
     def find_keyword_to_index(self, input_list: list):
         """
-                This function finds the index of the *to* keyword, which can find name value of the variables based on that.
-                    Args:
-                        input_list: list of words which contain the whole operation.
-                    Returns:
-                        The exact index of the *to* variable.
-                """
+        This function finds the index of the *to* keyword, which can find name value of the variables based on that.
+            Args:
+                input_list: list of words which contain the whole operation.
+            Returns:
+                The exact index of the *to* variable.
+        """
         to_keyword_indices = [index for index, value in enumerate(input_list) if value == 'to']
         to_keyword_index = filter(lambda index: index if input_list[index + 1] in self.variable_types[:-1] else 0,
                                   to_keyword_indices)
@@ -334,12 +331,12 @@ class VariableDeclaration:
 
     def find_keyword_from_index(self, input_list: list):
         """
-                This function finds the index of the *from* keyword, which can find name value of the variables based on that.
-                    Args:
-                        input_list: list of words which contain the whole operation.
-                    Returns:
-                        The exact index of the *from* variable.
-                """
+        This function finds the index of the *from* keyword, which can find name value of the variables based on that.
+            Args:
+                input_list: list of words which contain the whole operation.
+            Returns:
+                The exact index of the *from* variable.
+        """
         from_keyword_indices = [index for index, value in enumerate(input_list) if value == 'from']
         from_keyword_index = filter(lambda index: index if input_list[index + 1] in self.variable_types[:-1] else 0,
                                     from_keyword_indices)
@@ -348,12 +345,12 @@ class VariableDeclaration:
 
     def find_keyword_by_index(self, input_list: list):
         """
-                This function finds the index of the *by* keyword, which can find name value of the variables based on that.
-                    Args:
-                        input_list: list of words which contain the whole operation.
-                    Returns:
-                        The exact index of the *by* variable.
-                """
+        This function finds the index of the *by* keyword, which can find name value of the variables based on that.
+            Args:
+                input_list: list of words which contain the whole operation.
+            Returns:
+                The exact index of the *by* variable.
+        """
         by_keyword_indices = [index for index, value in enumerate(input_list) if value == 'by']
         by_keyword_index = filter(lambda index: index if input_list[index + 1] in self.variable_types[:-1] else 0,
                                   by_keyword_indices)

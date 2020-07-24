@@ -81,7 +81,7 @@ class IfCondition:
         if variable_type == 'integer':
             value = self.command[1]
         elif variable_type == 'float':
-            value = f'{self.command[1]}.{self.command[3]}'
+            value = f'{self.command[1]}'
         elif variable_type == 'string':
             if part == 'first_part':
                 end_of_string = self.is_keyword_index

@@ -44,13 +44,6 @@ class CommandToCode:
             raise Exception("Is Keyword Not Found")
         if self.command[is_index + 1] not in self.variable_types:
             raise Exception("Variable Type Is Unacceptable")
-        if self.command[is_index + 1] == 'float':
-            if point_index == -1 or point_index < is_index + 1:
-                raise Exception("The Value Is Not Float")
-            if not self.command[point_index - 1].isdigit():
-                raise Exception("The Value Is Not Float")
-            if not self.command[point_index + 1].isdigit():
-                raise Exception("The Value Is Not Float")
         if self.command[is_index + 1] == 'integer':
             if not self.command[is_index + 2].isdigit():
                 raise Exception("The Value Is Not Number")
@@ -170,16 +163,10 @@ class CommandToCode:
         if self.command[2] == 'integer':
             if not self.command[3].isdigit():
                 raise Exception("The Value Is Not Number")
-            if self.command[3] != 'is':
+            if self.command[4] != 'is':
                 raise Exception("The Format Is Wrong")
         if self.command[2] == 'float':
-            if not self.command[3].isdigit():
-                raise Exception("The Value Is Not Float")
-            if self.command[4] != 'point':
-                raise Exception("The Value Is Not Float")
-            if not self.command[5].isdigit():
-                raise Exception("The Value Is Not Float")
-            if self.command[6] != 'is':
+            if self.command[4] != 'is':
                 raise Exception("The Format Is Wrong")
         is_index = -1
         for index, value in enumerate(self.command):
@@ -200,13 +187,6 @@ class CommandToCode:
         if self.command[second_var_index] == 'integer':
             if not self.command[second_var_index + 1].isdigit():
                 raise Exception("The Value Is Not Number")
-        if self.command[second_var_index] == 'float':
-            if not self.command[second_var_index + 1].isdigit():
-                raise Exception("The Value Is Not Float")
-            if self.command[second_var_index + 2] != 'point':
-                raise Exception("The Value Is Not Float")
-            if not self.command[second_var_index + 3].isdigit():
-                raise Exception("The Value Is Not Float")
 
     def else_condition_error_check(self):
         if len(self.command) != 2:
