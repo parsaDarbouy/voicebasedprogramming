@@ -143,7 +143,6 @@ class Root(Tk):
             except Exception as error:
                 self.label1.configure(text=str(error))
                 return
-            print(text)
             words_list = list(map(lambda x: x.lower(), words_list))
 
             if ' '.join(words_list[:2]) == "remove line":
@@ -151,7 +150,7 @@ class Root(Tk):
                     self.remove_line(words_list[2])
                     self.label1.configure(text='No Error')
                 except Exception as error:
-                    self.label1.configure(text=str(error))
+                    self.label1.configure(text=str(error) + "\nWe heard: " + ' '.join(words_list))
                 return
 
             if ' '.join(words_list[:3]) == "go to line":
@@ -159,7 +158,7 @@ class Root(Tk):
                     self.got_to_line(words_list[3])
                     self.label1.configure(text='No Error')
                 except Exception as error:
-                    self.label1.configure(text=str(error))
+                    self.label1.configure(text=str(error) + "\nWe heard: " + ' '.join(words_list))
                 return
 
             self.code_converter.set_command(words_list)
@@ -171,7 +170,7 @@ class Root(Tk):
             try:
                 generated_code = (self.current_indent * 4 * ' ') + self.code_converter.generate_code() + "\n"
             except Exception as error:
-                self.label1.configure(text=str(error))
+                self.label1.configure(text=str(error) + "\nWe heard: " + ' '.join(words_list))
                 return
 
             self.write_code_to_file(generated_code)
@@ -238,10 +237,8 @@ class Root(Tk):
         self.Scrolledtext.configure(state=DISABLED)
 
     def got_to_line(self, line_number):
-        print("slm")
         if self.file_line_pointer is None:
             self.last_indent = self.current_indent
-            print("slm2")
 
         if line_number == "end":
             self.file_line_pointer = None
@@ -262,29 +259,25 @@ class Root(Tk):
             raise Exception("Invalid Line Number")
 
         with open(self.filename, "r") as file:
-            print("slm10")
             lines = file.readlines()
             if line_number > len(lines) or line_number < 1:
                 raise Exception("Invalid Line Number")
             target_line = lines[line_number - 1]
             self.current_indent = target_line.count('    ')
             self.file_line_pointer = line_number
-            print(self.current_indent)
-            print(self.file_line_pointer)
 
     def write_code_to_file(self, generated_code):
         if self.file_line_pointer:
-            print("slm3")
             with open(self.filename, 'r+') as file:
                 lines = file.readlines()
                 lines.insert(self.file_line_pointer - 1, generated_code)
                 file.seek(0)
                 file.writelines(lines)
-                print(lines)
                 self.Scrolledtext.configure(state=NORMAL)
                 self.Scrolledtext.delete('1.0', END)
                 self.Scrolledtext.insert('end', ''.join(lines))
                 self.Scrolledtext.configure(state=DISABLED)
+            self.file_line_pointer += 1
         else:
             with open(self.filename, "a") as file:
                 file.write(generated_code)

@@ -3,13 +3,34 @@ from word2number import w2n
 import unittest
 
 
-class VoiceRecognitionTest(unittest.TestCase):
+class GoogleRecognizerTest(unittest.TestCase):
     def setUp(self):
         self.r = sr.Recognizer()
         file = sr.AudioFile('assets/file.wav')
         with file as source:
             self.audio = self.r.record(source)
         self.result = self.r.recognize_google(self.audio).split()
+
+    def test_dictionary(self):
+        self.assertEqual("dictionary", self.result[0])
+
+    def test_list(self):
+        self.assertEqual("list", self.result[1])
+
+    def test_is(self):
+        self.assertEqual("is", self.result[2])
+
+    def test_float(self):
+        self.assertEqual("float", self.result[3])
+
+
+class SphinxRecognizerTest(unittest.TestCase):
+    def setUp(self):
+        self.r = sr.Recognizer()
+        file = sr.AudioFile('assets/file.wav')
+        with file as source:
+            self.audio = self.r.record(source)
+        self.result = self.r.recognize_sphinx(self.audio).split()
 
     def test_dictionary(self):
         self.assertEqual("dictionary", self.result[0])
