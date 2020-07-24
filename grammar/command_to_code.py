@@ -150,7 +150,7 @@ class CommandToCode:
             raise Exception("End of Parameters Not Found")
         if self.command[-2] != 'of':
             raise Exception("End of Parameters Not Found")
-        if self.command[-1] != 'end':
+        if self.command[-3] != 'end':
             raise Exception("End of Parameters Not Found")
 
     def if_condition_error_check(self):

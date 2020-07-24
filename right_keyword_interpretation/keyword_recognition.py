@@ -202,10 +202,6 @@ def keyword_recognition(string):
                     case_1 = 0
             elif case_1 == 0:
                 word = right_keyword(word, type_condition)
-                answer = answer + [word]
-                index = index + 1
-                word = words_list[index]
-                word = right_keyword(word, next_or_end_parameter)
                 if word == 'end':
                     answer = answer + [word]
                     index = index + 1
@@ -221,6 +217,10 @@ def keyword_recognition(string):
                         word = right_keyword(word, parameters)
                         answer = answer + [word]
                         break
+                answer = answer + [word]
+                index = index + 1
+                word = words_list[index]
+                word = right_keyword(word, next_or_end_parameter)
 
         elif case_0 == 6:
             if case_1 == -1:
@@ -265,4 +265,4 @@ def keyword_recognition(string):
     return answer
 
 
-print(keyword_recognition("varible x is operation add integer for to integer tree"))
+# print(keyword_recognition("function call x parameters string x end of parameters"))
