@@ -6,7 +6,7 @@ keyword_list = [('variable', 0.5, 'V614'), ('define', 0.5, 'D155'), ('if', 0.5, 
 variable_declaration = {('is', 0.6, 'I2')}
 variable_type = {('string', 0.6, 'S365'),
                  ('integer', 0.6, 'I532'), ('float', 0.6, 'F432'), ('list', 0.6, 'L232'), ('Dictionary', 0.6, 'D235'),
-                 ('operation', 0.5, 'O163')}
+                 ('operation', 0.6, 'O163')}
 
 define_function = [('function', 0.5, 'F523')]
 parameters = [('parameters', 0.7, 'P653')]
@@ -44,6 +44,10 @@ def keyword_recognition(string):
     while index < n:
         word = words_list[index]
         if case_0 == -1:
+            if word == "start":
+                answer = answer + [word]
+                break
+
             word = right_keyword(word, keyword_list)
             if word == "variable":
                 case_0 = 0
