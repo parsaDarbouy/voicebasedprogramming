@@ -107,6 +107,16 @@ def keyword_recognition(string):
                     case_1 = -1
                 elif word in ['string', 'integer', 'float', 'list', 'Dictionary']:
                     case_1 = 1
+            elif case_1 == 1:
+                if word == "one":
+                    word = 1
+                elif word == 'too' or word == "to":
+                    word = 2
+                elif word == "tree" or word == "free":
+                    word = 3
+                elif word == 'for':
+                    word = 4
+
 
         elif case_0 == 1:
             if case_1 == -1:
@@ -225,16 +235,34 @@ def keyword_recognition(string):
                     case_1 = 1
             elif case_1 == 1:
                 word = right_keyword(word, operation_conjunction)
+
+                if word == "one":
+                    word = 1
+                elif word == "tree" or word == "free":
+                    word = 3
+                elif word == 'for':
+                    word = 4
+
                 if word in ['from', 'by', 'to']:
                     case_1 = 2
             elif case_1 == 2:
                 word = right_keyword(word, math_var)
                 if word in ['variable', 'string', 'integer', 'float', 'list']:
                     case_1 = 3
+            elif case_1 == 3:
+
+                if word == "one":
+                    word = 1
+                elif word == "tree" or word == "free":
+                    word = 3
+                elif word == 'for':
+                    word = 4
+
 
         index = index + 1
         answer = answer + [word]
 
     return answer
 
-# print(keyword_recognition("varible x is operation at integer 10 from integer 10"))
+
+print(keyword_recognition("varible x is operation add integer for to integer tree"))
