@@ -76,5 +76,5 @@ class GoogleRecognizer(object):
         except speech_recognition.UnknownValueError:
             raise RecognizerException("Sorry! Could not understand what you said")
         except speech_recognition.RequestError:
-            raise RecognizerException("Seems like we cannot connect to google at this time! Try again later")
+            raise RecognizerException("Seems like we cannot connect to the internet at this time! Try again later")
         return self.current_result_text
